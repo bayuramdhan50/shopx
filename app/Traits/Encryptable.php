@@ -89,6 +89,11 @@ trait Encryptable
     {
         $value = parent::getAttribute($key);
         
+        // Skip password field to avoid interfering with authentication
+        if ($key === 'password') {
+            return $value;
+        }
+        
         if (in_array($key, $this->getEncryptableAttributes()) && !is_null($value)) {
             try {
                 return Crypt::decrypt($value);
@@ -109,6 +114,11 @@ trait Encryptable
      */
     public function setAttribute($key, $value)
     {
+        // Skip password field to avoid interfering with authentication
+        if ($key === 'password') {
+            return parent::setAttribute($key, $value);
+        }
+        
         if (in_array($key, $this->getEncryptableAttributes()) && !is_null($value)) {
             // Only encrypt if not already encrypted
             if (!$this->isEncrypted($value)) {

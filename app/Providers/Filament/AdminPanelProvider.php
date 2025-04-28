@@ -27,6 +27,12 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->authGuard('filament')
+            ->authMiddleware([
+                Authenticate::class,
+                \App\Http\Middleware\EnsureUserIsAdmin::class,
+            ])
+            ->registration(false)
             ->colors([
                 'primary' => Color::Indigo,
                 'gray' => Color::Slate,
@@ -67,6 +73,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                \App\Http\Middleware\EnsureUserIsAdmin::class,
             ]);
     }
 }

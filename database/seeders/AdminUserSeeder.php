@@ -17,7 +17,7 @@ class AdminUserSeeder extends Seeder
             'name' => 'Admin User',
             'email' => 'admin@example.com',
             'is_admin' => true,
-            'password' => bcrypt('password'),
+            'password' => \Illuminate\Support\Facades\Hash::make('password'),
         ]);
 
         // Create a regular user
@@ -25,7 +25,7 @@ class AdminUserSeeder extends Seeder
             'name' => 'Regular User',
             'email' => 'user@example.com',
             'is_admin' => false,
-            'password' => bcrypt('password'),
+            'password' => \Illuminate\Support\Facades\Hash::make('password'),
         ]);
     }
 }
