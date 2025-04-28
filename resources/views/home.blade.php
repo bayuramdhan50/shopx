@@ -1,8 +1,20 @@
 <x-layouts.main>
-    <x-slot name="title">Home</x-slot>
-
-    <!-- Hero Section -->
+    <x-slot name="title">Home</x-slot>    <!-- Hero Section -->
     <section class="relative bg-gradient-to-r from-indigo-600 to-sky-600 text-white overflow-hidden">
+        <!-- Welcome message for logged in users -->
+        @auth
+            <div class="bg-indigo-800 py-3">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                        <p class="text-sm font-medium">Welcome back, {{ Auth::user()->name }}! You are now logged in and ready to shop securely.</p>
+                    </div>
+                </div>
+            </div>
+        @endauth
+
         <div class="absolute inset-0 z-0 opacity-30">
             <svg class="absolute left-0 bottom-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
                 <path fill="#ffffff" fill-opacity="1" d="M0,192L48,176C96,160,192,128,288,138.7C384,149,480,203,576,224C672,245,768,235,864,208C960,181,1056,139,1152,133.3C1248,128,1344,160,1392,176L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>

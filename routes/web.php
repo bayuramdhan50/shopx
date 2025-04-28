@@ -21,10 +21,10 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 
 // Authenticated routes
 Route::middleware('auth')->group(function () {
-    // Dashboard
+    // Dashboard - admin only
     Route::get('/dashboard', function () {
         return view('dashboard');
-    })->name('dashboard');
+    })->name('dashboard')->middleware('admin');
     
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
