@@ -28,19 +28,19 @@
                     </div>
                 </div>
                 <nav class="py-2">
-                    <a href="#personal-info" class="profile-sidebar-link block px-4 py-3 text-sm text-indigo-600 bg-indigo-50 border-l-4 border-indigo-600 font-medium hover:bg-indigo-100 transition duration-150">
+                    <a href="#personal-info" class="profile-sidebar-link block px-4 py-3 text-sm text-gray-700 border-l-4 border-transparent hover:bg-gray-50 hover:text-indigo-600 hover:border-indigo-400 transition duration-150">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                         Personal Information
                     </a>
-                    <a href="#security" class="profile-sidebar-link block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600 border-l-4 border-transparent hover:border-indigo-400 transition duration-150">
+                    <a href="#security" class="profile-sidebar-link block px-4 py-3 text-sm text-gray-700 border-l-4 border-transparent hover:bg-gray-50 hover:text-indigo-600 hover:border-indigo-400 transition duration-150">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                         </svg>
                         Security & Password
                     </a>
-                    <a href="#delete-account" class="profile-sidebar-link block px-4 py-3 text-sm text-red-600 hover:bg-red-50 border-l-4 border-transparent hover:border-red-400 transition duration-150">
+                    <a href="#delete-account" class="profile-sidebar-link block px-4 py-3 text-sm text-red-600 border-l-4 border-transparent hover:bg-red-50 hover:border-red-400 transition duration-150">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
@@ -83,4 +83,74 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all navigation links
+            const navLinks = document.querySelectorAll('.profile-sidebar-link');
+            
+            // Add click event listener to each link
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Remove active classes from all links
+                    navLinks.forEach(item => {
+                        if (item.getAttribute('href') === '#delete-account') {
+                            // Special styling for delete account link
+                            item.classList.remove('bg-red-50', 'border-red-400', 'text-red-700');
+                            item.classList.add('text-red-600', 'border-transparent');
+                        } else {
+                            item.classList.remove('bg-indigo-50', 'border-indigo-600', 'text-indigo-600');
+                            item.classList.add('text-gray-700', 'border-transparent');
+                        }
+                    });
+                    
+                    // Add active class to clicked link
+                    if (this.getAttribute('href') === '#delete-account') {
+                        // Special styling for delete account link
+                        this.classList.remove('text-red-600', 'border-transparent');
+                        this.classList.add('bg-red-50', 'border-red-400', 'text-red-700');
+                    } else {
+                        this.classList.remove('text-gray-700', 'border-transparent');
+                        this.classList.add('bg-indigo-50', 'border-indigo-600', 'text-indigo-600');
+                    }
+                });
+            });
+
+            // Function to set active link based on hash
+            function setActiveLink() {
+                const hash = window.location.hash || '#personal-info';
+                
+                // Remove active classes from all links
+                navLinks.forEach(item => {
+                    if (item.getAttribute('href') === '#delete-account') {
+                        // Special styling for delete account link
+                        item.classList.remove('bg-red-50', 'border-red-400', 'text-red-700');
+                        item.classList.add('text-red-600', 'border-transparent');
+                    } else {
+                        item.classList.remove('bg-indigo-50', 'border-indigo-600', 'text-indigo-600');
+                        item.classList.add('text-gray-700', 'border-transparent');
+                    }
+                });
+                
+                // Add active class to the link matching current hash
+                const activeLink = document.querySelector('.profile-sidebar-link[href="' + hash + '"]');
+                if (activeLink) {
+                    if (hash === '#delete-account') {
+                        // Special styling for delete account link
+                        activeLink.classList.remove('text-red-600', 'border-transparent');
+                        activeLink.classList.add('bg-red-50', 'border-red-400', 'text-red-700');
+                    } else {
+                        activeLink.classList.remove('text-gray-700', 'border-transparent');
+                        activeLink.classList.add('bg-indigo-50', 'border-indigo-600', 'text-indigo-600');
+                    }
+                }
+            }
+            
+            // Initial check on page load
+            setActiveLink();
+            
+            // Also listen for hash changes
+            window.addEventListener('hashchange', setActiveLink);
+        });
+    </script>
 @endsection
