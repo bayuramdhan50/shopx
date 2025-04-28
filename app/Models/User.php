@@ -3,14 +3,16 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\Encryptable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, Encryptable;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +23,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'address',
+        'city',
+        'state',
+        'postal_code',
+        'country',
+        'payment_info',
     ];
 
     /**
@@ -31,6 +40,18 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'payment_info',
+    ];
+
+    /**
+     * Define which attributes should be encrypted
+     *
+     * @var array<string>
+     */
+    protected $encryptable = [
+        'phone',
+        'address',
+        'payment_info',
     ];
 
     /**
@@ -44,5 +65,21 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the user's orders
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Get the user's cart items
+     */
+    public function cartItems(): HasMany
+    {
+        return $this->hasMany(CartItem::class);
     }
 }
