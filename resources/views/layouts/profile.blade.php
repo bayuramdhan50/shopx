@@ -10,4 +10,6 @@
             @yield('profile_content')
         </div>
     </div>
+
+    @vite(['resources/js/profile.js'])
 @endsection

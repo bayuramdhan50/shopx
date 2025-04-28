@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class ProfileUpdateRequest extends FormRequest
@@ -15,6 +16,9 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Log incoming data for debugging
+        Log::info('Profile update request data:', $this->except(['password']));
+        
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => [

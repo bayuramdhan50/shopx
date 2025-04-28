@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
 {
@@ -82,5 +83,28 @@ class User extends Authenticatable
     public function cartItems(): HasMany
     {
         return $this->hasMany(CartItem::class);
+    }
+    
+    /**
+     * Boot the model
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        static::saved(function ($user) {
+            Log::info('User saved successfully', [
+                'id' => $user->id,
+                'name' => $user->name,
+                'updated_fields' => $user->getDirty()
+            ]);
+        });
+        
+        static::updated(function ($user) {
+            Log::info('User updated successfully', [
+                'id' => $user->id,
+                'updated_fields' => array_keys($user->getDirty())
+            ]);
+        });
     }
 }

@@ -63,32 +63,18 @@
                             <a href="{{ route('login') }}" class="text-white hover:text-indigo-100">Login</a>
                             <a href="{{ route('register') }}" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 focus:outline-none focus:bg-indigo-50 active:bg-indigo-50 transition ease-in-out duration-150">
                                 Register
-                            </a>
-                        @else                            <div class="relative" x-data="{ open: false }">
+                            </a>                        @else
+                            <div class="relative" x-data="{ open: false }">
                                 <div>
                                     <button @click="open = !open" class="flex items-center text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-indigo-300 transition duration-150 ease-in-out">
-                                        <span class="text-white">{{ Auth::user()->name }}</span>
-                                        @if(Auth::user()->is_admin)
-                                            <span class="ml-1 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-800 text-white">
-                                                Admin
-                                            </span>
-                                        @endif
-                                        <svg class="ml-2 -mr-0.5 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                        </svg>
+                                        <div class="h-8 w-8 rounded-full bg-indigo-800 flex items-center justify-center">
+                                            <span class="text-white font-bold">{{ substr(Auth::user()->name, 0, 1) }}</span>
+                                        </div>
                                     </button>
-                                </div><div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 rounded-md shadow-lg origin-top-right z-10">
-                                    <div class="rounded-md bg-white shadow-xs py-1">
-                                        @if(Auth::user()->is_admin)
-                                        <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
-                                            Dashboard
-                                        </a>
-                                        @endif
+                                </div>                                <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 rounded-md shadow-lg origin-top-right z-10">
+                                    <div class="rounded-md bg-white shadow-md py-1">
                                         <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
                                             Profile
-                                        </a>
-                                        <a href="{{ route('orders.index') }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
-                                            My Orders
                                         </a>
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf
@@ -136,39 +122,19 @@
                                 {{ auth()->user()->cartItems()->count() }}
                             </span>
                         @endauth
-                    </a>
-                </div>
+                    </a>                </div>
 
                 <!-- Mobile User Menu -->
-                @auth
-                    <div class="pt-4 pb-1 border-t border-indigo-700">
-                        <div class="flex items-center px-4">
+                @auth                    <div class="pt-4 pb-1 border-t border-indigo-700">
+                        <div class="flex items-center px-4 mb-3">
                             <div class="flex-shrink-0">
                                 <div class="h-10 w-10 rounded-full bg-indigo-800 flex items-center justify-center">
                                     <span class="text-white font-bold">{{ substr(Auth::user()->name, 0, 1) }}</span>
                                 </div>
-                            </div>                            <div class="ml-3">
-                                <div class="font-medium text-base text-white">
-                                    {{ Auth::user()->name }}
-                                    @if(Auth::user()->is_admin)
-                                        <span class="ml-1 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-800 text-white">
-                                            Admin
-                                        </span>
-                                    @endif
-                                </div>
-                                <div class="font-medium text-sm text-indigo-200">{{ Auth::user()->email }}</div>
                             </div>
-                        </div>                        <div class="mt-3 space-y-1">
-                            @if(Auth::user()->is_admin)
-                            <a href="{{ route('dashboard') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:text-white hover:bg-indigo-700 hover:border-indigo-300 focus:outline-none focus:text-white focus:bg-indigo-700 focus:border-indigo-300 transition duration-150 ease-in-out">
-                                Dashboard
-                            </a>
-                            @endif
+                        </div><div class="mt-3 space-y-1">
                             <a href="{{ route('profile.edit') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:text-white hover:bg-indigo-700 hover:border-indigo-300 focus:outline-none focus:text-white focus:bg-indigo-700 focus:border-indigo-300 transition duration-150 ease-in-out">
                                 Profile
-                            </a>
-                            <a href="{{ route('orders.index') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:text-white hover:bg-indigo-700 hover:border-indigo-300 focus:outline-none focus:text-white focus:bg-indigo-700 focus:border-indigo-300 transition duration-150 ease-in-out">
-                                My Orders
                             </a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
