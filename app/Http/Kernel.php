@@ -36,6 +36,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\AdminAutoRedirect::class,
         ],
 
         'api' => [
@@ -63,6 +64,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'admin.filament' => \App\Http\Middleware\EnsureUserIsAdmin::class,
+        'admin.autoredirect' => \App\Http\Middleware\AdminAutoRedirect::class,
         'profile-logger' => \App\Http\Middleware\ProfileErrorLogger::class,
     ];
 }

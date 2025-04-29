@@ -40,10 +40,7 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'filament' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
+        // Remove filament guard since we're using web guard for Filament too
     ],
 
     /*

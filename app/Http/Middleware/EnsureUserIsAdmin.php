@@ -15,16 +15,17 @@ class EnsureUserIsAdmin
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */    public function handle(Request $request, Closure $next): Response
     {
-        // First check web guard
-        if (Auth::check() && Auth::user()->is_admin) {
-            return $next($request);
-        }
-        
-        // Then check filament guard if previous check failed
-        if (Auth::guard('filament')->check() && Auth::guard('filament')->user()->is_admin) {
-            return $next($request);
+        // Check if the user is authenticated and is an admin
+        if (!Auth::check() || !Auth::user()->is_admin) {
+            // If we get here during a Filament request but user is logged in as admin via web guard
+            // redirect to admin login
+            if ($request->is('admin*')) {
+                return redirect()->route('login');
+            }
+            
+            abort(403, 'Unauthorized action. Admin access required.');
         }
 
-        abort(403, 'Unauthorized action. Admin access required.');
+        return $next($request);
     }
 }

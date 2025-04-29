@@ -53,4 +53,11 @@ Route::middleware('auth')->group(function () {
 // Midtrans notification handler (no auth required)
 Route::post('/payment/notification', [PaymentController::class, 'notification'])->name('payment.notification');
 
+// Custom admin logout route
+Route::post('/admin/logout', [App\Http\Controllers\AdminLogoutController::class, 'logout'])->name('admin.logout');
+
+// Filament specific logout route
+Route::post('/admin/auth/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])
+    ->name('filament.admin.auth.logout');
+
 require __DIR__.'/auth.php';

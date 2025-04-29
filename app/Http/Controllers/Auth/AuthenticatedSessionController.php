@@ -30,7 +30,7 @@ class AuthenticatedSessionController extends Controller
 
         // Check if user is an admin
         if (auth()->user()->is_admin) {
-            return redirect()->intended('/admin');
+            return redirect('/admin'); // Direct path to admin panel
         }
 
         // Redirect non-admin users to the home page
@@ -42,12 +42,24 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // Check if the user was an admin
+        $wasAdmin = Auth::user() && Auth::user()->is_admin;
+        
+        // Check if logout is initiated from admin panel
+        $isFromAdmin = str_contains($request->path(), 'admin');
+        
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
+        // If the user was an admin or request came from admin section, redirect to login page
+        if ($wasAdmin || $isFromAdmin) {
+            return redirect()->route('login');
+        }
+        
+        // Otherwise redirect to home
         return redirect('/');
     }
 }

@@ -26,8 +26,14 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
-            ->authGuard('filament')
+            ->login(function () {
+                // Skip login if already authenticated as admin
+                if (auth()->check() && auth()->user()->is_admin) {
+                    return redirect('/admin/dashboard');
+                }
+                return null;
+            })
+            ->authGuard('web')  // Use the web guard instead of filament
             ->authMiddleware([
                 Authenticate::class,
                 \App\Http\Middleware\EnsureUserIsAdmin::class,
@@ -43,8 +49,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->font('Inter')
             ->brandName('ShopX Admin')
-            ->brandLogo(asset('images/logo.png'))
-            ->favicon(asset('favicon.ico'))
+            // Remove or fix the logo if it doesn't exist
+            // ->brandLogo(asset('images/logo.png'))
+            // ->favicon(asset('favicon.ico'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
