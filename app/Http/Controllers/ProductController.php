@@ -18,7 +18,10 @@ class ProductController extends Controller
         
         // Filter by category if provided
         if ($request->filled('category')) {
-            $query->where('category', $request->category);
+            $category = json_decode($request->category);
+            if (isset($category->id)) {
+                $query->where('category_id', $category->id);
+            }
         }
         
         // Filter by brand if provided
@@ -46,7 +49,7 @@ class ProductController extends Controller
         }
         
         // Get all categories and brands for filters
-        $categories = Product::select('category')->distinct()->pluck('category');
+        $categories = \App\Models\Category::where('is_active', true)->get();
         $brands = Product::select('brand')->distinct()->pluck('brand');
         
         // Sort products
@@ -84,7 +87,7 @@ class ProductController extends Controller
     public function show(Product $product): View
     {
         // Get related products in the same category
-        $relatedProducts = Product::where('category', $product->category)
+        $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->take(4)
             ->get();

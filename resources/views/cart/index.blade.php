@@ -48,7 +48,7 @@
                                                             </a>
                                                         </h3>
                                                         <p class="mt-1 text-sm text-gray-500">{{ $item->product->brand }}</p>
-                                                        <p class="mt-1 text-sm text-gray-500">Category: {{ $item->product->category }}</p>
+                                                        <p class="mt-1 text-sm text-gray-500">Category: {{ $item->product->category->name ?? 'Uncategorized' }}</p>
                                                     </div>
                                                     <p class="text-lg font-medium text-indigo-600">
                                                         Rp {{ number_format($item->product->price, 0, ',', '.') }}

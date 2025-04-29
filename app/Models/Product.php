@@ -25,7 +25,7 @@ class Product extends Model
         'stock',
         'image',
         'featured',
-        'category',
+        'category_id',
         'brand',
         'sku',
     ];
@@ -56,6 +56,14 @@ class Product extends Model
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+    
+    /**
+     * Get the category this product belongs to
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     /**

@@ -152,7 +152,7 @@ class OrderController extends Controller
                 'name' => $product->name,
                 'description' => $product->description,
                 'brand' => $product->brand,
-                'category' => $product->category,
+                'category' => $product->category ? $product->category->name : 'Uncategorized',
                 'sku' => $product->sku,
             ]);
             

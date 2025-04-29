@@ -60,9 +60,23 @@ class ProductResource extends Resource
                     
                 Forms\Components\Section::make('Categorization')
                     ->schema([
-                        Forms\Components\TextInput::make('category')
+                        Forms\Components\Select::make('category_id')
+                            ->relationship('category', 'name')
                             ->required()
-                            ->maxLength(255),
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('slug')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->unique(),
+                                Forms\Components\Toggle::make('is_active')
+                                    ->label('Active')
+                                    ->default(true),
+                            ])
+                            ->preload()
+                            ->searchable(),
                             
                         Forms\Components\TextInput::make('brand')
                             ->required()
@@ -110,7 +124,8 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('stock')
                     ->sortable(),
                     
-                Tables\Columns\TextColumn::make('category')
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Category')
                     ->searchable()
                     ->sortable(),
                     
@@ -127,7 +142,21 @@ class ProductResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('category_id')
+                    ->label('Category')
+                    ->relationship('category', 'name')
+                    ->preload()
+                    ->multiple(),
+                    
+                Tables\Filters\TernaryFilter::make('featured')
+                    ->label('Featured Status')
+                    ->placeholder('All Products')
+                    ->trueLabel('Featured Products')
+                    ->falseLabel('Not Featured Products'),
+                    
+                Tables\Filters\Filter::make('low_stock')
+                    ->label('Low Stock')
+                    ->query(fn (Builder $query): Builder => $query->where('stock', '<', 10)),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

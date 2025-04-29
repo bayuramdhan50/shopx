@@ -193,9 +193,10 @@
             @php
                 $categorySales = App\Models\OrderItem::join('products', 'order_items.product_id', '=', 'products.id')
                     ->join('orders', 'order_items.order_id', '=', 'orders.id')
+                    ->join('categories', 'products.category_id', '=', 'categories.id')
                     ->where('orders.status', 'completed')
-                    ->select('products.category', DB::raw('SUM(order_items.subtotal) as total_sales'))
-                    ->groupBy('products.category')
+                    ->select('categories.name as category_name', DB::raw('SUM(order_items.subtotal) as total_sales'))
+                    ->groupBy('categories.name')
                     ->orderByDesc('total_sales')
                     ->get();
                 
@@ -351,7 +352,7 @@
                     data: {
                         labels: [
                             @foreach($categorySales as $category)
-                                '{{ $category->category }}',
+                                '{{ $category->category_name }}',
                             @endforeach
                         ],
                         datasets: [{

@@ -20,8 +20,8 @@
                         <select id="category" name="category" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             <option value="">All Categories</option>
                             @foreach($categories as $category)
-                                <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
-                                    {{ $category }}
+                                <option value="{{ json_encode($category) }}" {{ request('category') == json_encode($category) ? 'selected' : '' }}>
+                                    {{ $category->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -101,7 +101,7 @@
                             
                             <div class="p-4">
                                 <div class="flex justify-between items-center mb-2">
-                                    <span class="text-sm text-indigo-600 font-medium">{{ $product->category }}</span>
+                                    <span class="text-sm text-indigo-600 font-medium">{{ $product->category->name ?? 'Uncategorized' }}</span>
                                     <span class="text-sm text-gray-500">{{ $product->brand }}</span>
                                 </div>
                                 

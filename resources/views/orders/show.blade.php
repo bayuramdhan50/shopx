@@ -84,7 +84,7 @@
                                                     <p class="mt-1 text-sm text-gray-500">
                                                         {{ $item->product->brand }}
                                                         @if ($item->product->category)
-                                                            - {{ $item->product->category }}
+                                                            - {{ $item->product->category->name }}
                                                         @endif
                                                     </p>
                                                     @if ($item->product->sku)
