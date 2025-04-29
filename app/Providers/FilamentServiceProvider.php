@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Filament\Panel;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
+use App\Filament\Widgets\SalesOverviewWidget;
 
 class FilamentServiceProvider extends ServiceProvider
 {
@@ -30,5 +32,8 @@ class FilamentServiceProvider extends ServiceProvider
                 $panel->tenant(auth()->user());
             }
         });
+        
+        // Register Livewire components for our custom widgets
+        \Livewire\Livewire::component('filament.widgets.sales-overview-widget', \App\Filament\Widgets\SalesOverviewWidget::class);
     }
 }
