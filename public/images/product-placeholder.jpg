@@ -1,0 +1,7 @@
+<!-- This is a simple SVG image placeholder that can be used when no product image is available -->
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" fill="#F3F4F6"/>
+  <path d="M128 160C128 142.3 142.3 128 160 128H352C369.7 128 384 142.3 384 160V352C384 369.7 369.7 384 352 384H160C142.3 384 128 369.7 128 352V160Z" stroke="#9CA3AF" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M176 224L224 272L256 240L336 320" stroke="#6B7280" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="192" cy="192" r="24" fill="#9CA3AF"/>
+</svg>

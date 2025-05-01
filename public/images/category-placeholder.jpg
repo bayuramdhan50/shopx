@@ -1,0 +1,8 @@
+<!-- This is a simple SVG image placeholder that can be used when no category image is available -->
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" fill="#EBF4FF"/>
+  <rect x="128" y="128" width="256" height="256" rx="32" stroke="#93C5FD" stroke-width="16"/>
+  <path d="M256 176L304 240H208L256 176Z" fill="#93C5FD"/>
+  <circle cx="320" cy="224" r="24" fill="#93C5FD"/>
+  <path d="M176 240L224 304L288 224L368 320H144L176 240Z" fill="#93C5FD"/>
+</svg>
