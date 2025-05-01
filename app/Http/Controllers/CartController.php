@@ -130,10 +130,16 @@ class CartController extends Controller
             return $item->product->price * $item->quantity;
         });
         
+        // Get user's saved payment methods
+        $paymentMethods = Auth::user()->paymentMethods;
+        $defaultPaymentMethod = $paymentMethods->where('is_default', true)->first();
+        
         return view('cart.checkout', [
             'cartItems' => $cartItems,
             'total' => $total,
             'user' => Auth::user(),
+            'paymentMethods' => $paymentMethods,
+            'defaultPaymentMethod' => $defaultPaymentMethod,
         ]);
     }
 }

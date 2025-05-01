@@ -30,6 +30,32 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Order Items -->
                 <div class="md:col-span-2">
+                    <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 mb-8">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                            <h2 class="text-lg font-medium text-gray-900">Payment Information</h2>
+                        </div>
+                        <div class="px-4 py-5 sm:p-6">
+                            <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">Order Status</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">{{ ucfirst($order->status) }}</dd>
+                                </div>
+                                
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">Payment Method</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">{{ $order->payment_method ?? 'Not specified' }}</dd>
+                                </div>
+                                
+                                @if(isset($order->notes) && !empty($order->notes))
+                                <div class="sm:col-span-2">
+                                    <dt class="text-sm font-medium text-gray-500">Order Notes</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">{{ $order->notes }}</dd>
+                                </div>
+                                @endif
+                            </dl>
+                        </div>
+                    </div>
+                    
                     <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200">
                         <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
                             <h2 class="text-lg font-medium text-gray-900">Order Items</h2>

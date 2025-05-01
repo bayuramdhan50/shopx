@@ -8,7 +8,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Checkout Form -->
                 <div class="lg:col-span-2">
-                    <form action="{{ route('orders.store') }}" method="POST" class="space-y-8">
+                    <form id="order-form" action="{{ route('orders.store') }}" method="POST" class="space-y-8">
                         @csrf
                         
                         <!-- Shipping Information -->
@@ -153,9 +153,12 @@
                             </div>
                         </div>
                         
+                        <!-- Payment Method -->
+                        @include('cart.payment_method_section')
+                        
                         <!-- Submit Button (Mobile Only) -->
                         <div class="lg:hidden">
-                            <button type="submit" class="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center justify-center">
+                            <button type="submit" form="order-form" class="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
                                 </svg>
@@ -248,7 +251,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
-                                Payment processed securely through Midtrans
+                                Payments are processed securely
                             </p>
                         </div>
                     </div>
@@ -264,46 +267,75 @@
             const sameAsShippingCheckbox = document.getElementById('same-as-shipping');
             const billingFieldsDiv = document.getElementById('billing-fields');
             
-            function toggleBillingFields() {
-                if (sameAsShippingCheckbox.checked) {
-                    billingFieldsDiv.classList.add('hidden');
-                    // Copy shipping values to billing fields (for form submission)
-                    document.getElementById('billing_name').value = document.getElementById('shipping_name').value;
-                    document.getElementById('billing_phone').value = document.getElementById('shipping_phone').value;
-                    document.getElementById('billing_address').value = document.getElementById('shipping_address').value;
-                    document.getElementById('billing_city').value = document.getElementById('shipping_city').value;
-                    document.getElementById('billing_state').value = document.getElementById('shipping_state').value;
-                    document.getElementById('billing_zip').value = document.getElementById('shipping_zip').value;
-                    document.getElementById('billing_country').value = document.getElementById('shipping_country').value;
-                } else {
-                    billingFieldsDiv.classList.remove('hidden');
+            // Only execute if these elements exist
+            if (sameAsShippingCheckbox && billingFieldsDiv) {
+                function toggleBillingFields() {
+                    if (sameAsShippingCheckbox.checked) {
+                        billingFieldsDiv.classList.add('hidden');
+                        // Copy shipping values to billing fields (for form submission)
+                        document.getElementById('billing_name').value = document.getElementById('shipping_name').value;
+                        document.getElementById('billing_phone').value = document.getElementById('shipping_phone').value;
+                        document.getElementById('billing_address').value = document.getElementById('shipping_address').value;
+                        document.getElementById('billing_city').value = document.getElementById('shipping_city').value;
+                        document.getElementById('billing_state').value = document.getElementById('shipping_state').value;
+                        document.getElementById('billing_zip').value = document.getElementById('shipping_zip').value;
+                        document.getElementById('billing_country').value = document.getElementById('shipping_country').value;
+                    } else {
+                        billingFieldsDiv.classList.remove('hidden');
+                    }
+                }
+                
+                // Initial setup
+                toggleBillingFields();
+                
+                // Handle checkbox changes
+                sameAsShippingCheckbox.addEventListener('change', toggleBillingFields);
+                
+                // Copy shipping to billing when shipping fields change (if same-as-shipping is checked)
+                const shippingFields = [
+                    'shipping_name', 'shipping_phone', 'shipping_address', 
+                    'shipping_city', 'shipping_state', 'shipping_zip', 'shipping_country'
+                ];
+                
+                shippingFields.forEach(field => {
+                    const element = document.getElementById(field);
+                    if (element) {
+                        element.addEventListener('input', function() {
+                            if (sameAsShippingCheckbox.checked) {
+                                const billingField = field.replace('shipping_', 'billing_');
+                                const billingElement = document.getElementById(billingField);
+                                if (billingElement) {
+                                    billingElement.value = this.value;
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            
+            // Payment method handling
+            const paymentTypeRadios = document.querySelectorAll('input[name="payment_method_type"]');
+            const savedPaymentMethodsContainer = document.getElementById('saved_payment_methods_container');
+            
+            function togglePaymentMethod() {
+                const selectedValue = document.querySelector('input[name="payment_method_type"]:checked')?.value;
+                
+                if (savedPaymentMethodsContainer) {
+                    if (selectedValue === 'saved') {
+                        savedPaymentMethodsContainer.classList.remove('hidden');
+                    } else {
+                        savedPaymentMethodsContainer.classList.add('hidden');
+                    }
                 }
             }
             
-            // Initial setup
-            toggleBillingFields();
+            // Initial setup for payment method
+            togglePaymentMethod();
             
-            // Handle checkbox changes
-            sameAsShippingCheckbox.addEventListener('change', toggleBillingFields);
-            
-            // Copy shipping to billing when shipping fields change (if same-as-shipping is checked)
-            const shippingFields = [
-                'shipping_name', 'shipping_phone', 'shipping_address', 
-                'shipping_city', 'shipping_state', 'shipping_zip', 'shipping_country'
-            ];
-            
-            shippingFields.forEach(field => {
-                document.getElementById(field).addEventListener('input', function() {
-                    if (sameAsShippingCheckbox.checked) {
-                        const billingField = field.replace('shipping_', 'billing_');
-                        document.getElementById(billingField).value = this.value;
-                    }
-                });
+            // Handle payment method type changes
+            paymentTypeRadios.forEach(radio => {
+                radio.addEventListener('change', togglePaymentMethod);
             });
-            
-            // Make order form submit button work for the fixed side panel button
-            const orderForm = document.querySelector('form[action="{{ route('orders.store') }}"]');
-            orderForm.id = 'order-form';
         });
     </script>
     @endpush

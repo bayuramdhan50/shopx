@@ -86,6 +86,14 @@ class User extends Authenticatable
     }
     
     /**
+     * Get the user's payment methods
+     */
+    public function paymentMethods(): HasMany
+    {
+        return $this->hasMany(PaymentMethod::class);
+    }
+    
+    /**
      * Boot the model
      */
     protected static function boot()

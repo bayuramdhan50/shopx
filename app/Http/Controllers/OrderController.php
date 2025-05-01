@@ -95,6 +95,7 @@ class OrderController extends Controller
             'billing_zip' => 'required|string|max:20',
             'billing_country' => 'required|string|max:255',
             'billing_phone' => 'required|string|max:20',
+            'payment_method_type' => 'required|string|in:saved,new,cod',
         ]);
         
         $user = Auth::user();
@@ -132,6 +133,20 @@ class OrderController extends Controller
             'phone' => $request->billing_phone,
         ]);
         
+        // Process payment method
+        $paymentMethod = 'Cash on Delivery';
+        
+        if ($request->payment_method_type === 'saved' && $request->has('payment_method_id')) {
+            // Use a saved payment method
+            $savedMethod = $user->paymentMethods()->find($request->payment_method_id);
+            if ($savedMethod) {
+                $paymentMethod = $savedMethod->getFormattedType();
+            }
+        } 
+        elseif ($request->payment_method_type === 'new') {
+            $paymentMethod = 'Credit Card';
+        }
+        
         // Create a new order
         $order = Order::create([
             'user_id' => $user->id,
@@ -140,9 +155,10 @@ class OrderController extends Controller
             'total_amount' => $totalAmount,
             'shipping_address' => $shippingAddress, // Will be encrypted by the model
             'billing_address' => $billingAddress, // Will be encrypted by the model
+            'payment_method' => $paymentMethod,
             'notes' => $request->notes,
         ]);
-        
+
         // Create order items
         foreach ($cartItems as $cartItem) {
             $product = $cartItem->product;
@@ -173,7 +189,11 @@ class OrderController extends Controller
         // Clear the cart after creating the order
         $user->cartItems()->delete();
         
-        return redirect()->route('payment.process', $order)
-            ->with('success', 'Order placed successfully. Please complete your payment.');
+        // Mark order as completed directly instead of going through payment gateway
+        $order->status = 'processing';
+        $order->save();
+        
+        return redirect()->route('orders.show', $order)
+            ->with('success', 'Order placed successfully! Your order is now being processed.');
     }
 }

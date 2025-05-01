@@ -25,11 +25,8 @@ class Order extends Model
         'total_amount',
         'shipping_address',
         'billing_address',
-        'payment_details',
-        'midtrans_response',
-        'midtrans_transaction_id',
-        'midtrans_payment_type',
-        'midtrans_status',
+        'encrypted_payment_details',
+        'payment_method',
         'notes',
     ];
 
@@ -50,8 +47,6 @@ class Order extends Model
     protected $encryptable = [
         'shipping_address',
         'billing_address',
-        'payment_details',
-        'midtrans_response',
     ];
 
     /**

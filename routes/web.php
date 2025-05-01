@@ -4,6 +4,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -45,13 +46,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
     
     // Payments
-    Route::get('/payment/{order}', [PaymentController::class, 'process'])->name('payment.process');
-    Route::post('/payment/{order}/success', [PaymentController::class, 'success'])->name('payment.success');
-    Route::post('/payment/{order}/failed', [PaymentController::class, 'failed'])->name('payment.failed');
+    Route::get('/payment-methods', [PaymentMethodController::class, 'index'])->name('payment-methods.index');
+    Route::get('/payment-methods/create', [PaymentMethodController::class, 'create'])->name('payment-methods.create');
+    Route::post('/payment-methods', [PaymentMethodController::class, 'store'])->name('payment-methods.store');
+    Route::post('/payment-methods/{paymentMethod}/set-default', [PaymentMethodController::class, 'setDefault'])->name('payment-methods.set-default');
+    Route::delete('/payment-methods/{paymentMethod}', [PaymentMethodController::class, 'destroy'])->name('payment-methods.destroy');
 });
-
-// Midtrans notification handler (no auth required)
-Route::post('/payment/notification', [PaymentController::class, 'notification'])->name('payment.notification');
 
 // Custom admin logout route
 Route::post('/admin/logout', [App\Http\Controllers\AdminLogoutController::class, 'logout'])->name('admin.logout');
