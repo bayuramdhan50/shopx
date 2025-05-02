@@ -152,7 +152,41 @@
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm text-indigo-700">
-                                    Informasi pembayaran Anda dienkripsi secara aman menggunakan AES-256. Kami tidak pernah menyimpan detail kartu Anda dalam bentuk plaintext.
+                                    Informasi pembayaran Anda dienkripsi secara aman menggunakan AES-256 yang diperkuat dengan PBKDF2. 
+                                    Kunci enkripsi kami menggunakan teknik key-stretching yang tahan terhadap serangan brute-force, 
+                                    dan setiap pengguna memiliki salt unik. Data Anda tidak pernah disimpan dalam bentuk plaintext.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Enhanced Security Details (Collapsible) -->
+                    <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+                        <button type="button" id="security-details-toggle" class="w-full px-6 py-4 text-left flex justify-between items-center">
+                            <span class="text-lg font-medium text-gray-900">Detail Keamanan Tambahan</span>
+                            <svg id="security-details-arrow" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 transform transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        
+                        <div id="security-details-content" class="hidden px-6 pb-4 pt-2">
+                            <div class="prose prose-sm text-gray-600">
+                                <p>ShopX menggunakan kombinasi metode keamanan berikut untuk melindungi data pembayaran Anda:</p>
+                                
+                                <h4 class="text-gray-800 font-semibold mt-3">1. AES-256 (Advanced Encryption Standard)</h4>
+                                <p>Standar enkripsi simetris yang diakui secara global yang digunakan oleh lembaga pemerintah dan perusahaan terkemuka. Panjang kunci 256-bit dianggap tidak dapat dipecahkan dengan teknologi komputasi saat ini.</p>
+                                
+                                <h4 class="text-gray-800 font-semibold mt-3">2. PBKDF2 (Password-Based Key Derivation Function 2)</h4>
+                                <p>Memperkuat kunci enkripsi dengan menerapkan fungsi hash berulang kali, membuatnya sangat tahan terhadap serangan brute-force. Kami menerapkan 10.000+ iterasi untuk meningkatkan keamanan.</p>
+                                
+                                <h4 class="text-gray-800 font-semibold mt-3">3. Salt Acak per Pengguna</h4>
+                                <p>Setiap data pembayaran dilindungi dengan salt acak unik sepanjang 32-byte. Bahkan jika dua pengguna memiliki detail kartu yang identik, enkripsi yang dihasilkan akan berbeda.</p>
+                                
+                                <h4 class="text-gray-800 font-semibold mt-3">4. Konteks Tambahan</h4>
+                                <p>Kami memasukkan ID pengguna ke dalam proses enkripsi, memastikan bahwa hanya akun Anda yang dapat mendekripsi data pembayaran Anda.</p>
+                                
+                                <p class="mt-3 text-xs text-gray-500">
+                                    <strong>Catatan:</strong> Meskipun kami melakukan upaya maksimal untuk melindungi data Anda, tidak ada sistem yang 100% aman. Kami terus mengupdate dan memperbaiki keamanan sistem kami.
                                 </p>
                             </div>
                         </div>
@@ -296,6 +330,18 @@
                 accountNumberInput.addEventListener('input', function(e) {
                     let value = e.target.value.replace(/\D/g, '');
                     e.target.value = value;
+                });
+            }
+
+            // Toggle security details
+            const securityDetailsToggle = document.getElementById('security-details-toggle');
+            const securityDetailsContent = document.getElementById('security-details-content');
+            const securityDetailsArrow = document.getElementById('security-details-arrow');
+
+            if (securityDetailsToggle) {
+                securityDetailsToggle.addEventListener('click', function() {
+                    securityDetailsContent.classList.toggle('hidden');
+                    securityDetailsArrow.classList.toggle('rotate-180');
                 });
             }
         });
