@@ -1,27 +1,27 @@
 <!-- Payment Method -->
 <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden p-6">
     <h2 class="text-lg font-medium text-gray-900 mb-4">Payment Method</h2>
-    
+
     <div class="space-y-6">
         <div>
             <div class="space-y-4">
                 <!-- Cash on Delivery Option -->
                 <div class="flex items-center">
-                    <input id="payment_method_type_cod" name="payment_method_type" type="radio" value="cod" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500" {{ old('payment_method_type') == 'cod' ? 'checked' : 'checked' }}>
+                    <input id="payment_method_type_cod" name="payment_method_type" type="radio" value="cod" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500" checked>
                     <label for="payment_method_type_cod" class="ml-3 block text-sm font-medium text-gray-700">
                         Cash on Delivery
                     </label>
                 </div>
-                
+
                 <!-- Saved Payment Methods -->
-                @if(isset($paymentMethods) && $paymentMethods->count() > 0)
+                @if(Auth::check() && isset($paymentMethods) && $paymentMethods->count() > 0)
                     <div class="flex items-center">
                         <input id="payment_method_type_saved" name="payment_method_type" type="radio" value="saved" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500" {{ old('payment_method_type') == 'saved' ? 'checked' : '' }}>
                         <label for="payment_method_type_saved" class="ml-3 block text-sm font-medium text-gray-700">
                             Use Saved Payment Method
                         </label>
                     </div>
-                    
+
                     <div id="saved_payment_methods_container" class="ml-7 mt-3 space-y-3 {{ old('payment_method_type') == 'saved' ? '' : 'hidden' }}">
                         @foreach($paymentMethods as $method)
                             <div class="flex items-center">
@@ -38,13 +38,13 @@
                                 </label>
                             </div>
                         @endforeach
-                        
+
                         <div class="mt-3">
                             <a href="{{ route('payment-methods.index') }}" class="text-sm text-indigo-600 hover:text-indigo-900">Manage Payment Methods</a>
                         </div>
                     </div>
                 @endif
-                
+
                 <!-- Credit Card Option -->
                 <div class="flex items-center">
                     <input id="payment_method_type_new" name="payment_method_type" type="radio" value="new" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500" {{ old('payment_method_type') == 'new' ? 'checked' : '' }}>
@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="bg-indigo-50 p-4 rounded-lg mt-6">
         <div class="flex">
             <div class="flex-shrink-0">
@@ -71,3 +71,25 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const paymentTypeRadios = document.querySelectorAll('input[name="payment_method_type"]');
+        const savedPaymentMethodsContainer = document.getElementById('saved_payment_methods_container');
+
+        function togglePaymentMethod() {
+            const selectedValue = document.querySelector('input[name="payment_method_type"]:checked')?.value;
+
+            if (savedPaymentMethodsContainer) {
+                savedPaymentMethodsContainer.classList.toggle('hidden', selectedValue !== 'saved');
+            }
+        }
+
+        paymentTypeRadios.forEach(radio => {
+            radio.addEventListener('change', togglePaymentMethod);
+        });
+
+        // Initialize on page load
+        togglePaymentMethod();
+    });
+</script>

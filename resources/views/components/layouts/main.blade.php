@@ -10,163 +10,19 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    
+
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
-    
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 </head>
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-50">
-        <!-- Navigation -->
-        <nav x-data="{ open: false }" class="bg-indigo-600 border-b border-indigo-700 shadow">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16">
-                    <!-- Logo and primary navigation -->
-                    <div class="flex">
-                        <div class="shrink-0 flex items-center">
-                            <a href="{{ route('home') }}" class="text-white font-bold text-xl">
-                                ShopX
-                            </a>
-                        </div>
-
-                        <!-- Primary Navigation Menu -->
-                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                            <a href="{{ route('home') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-white hover:text-indigo-100 hover:border-indigo-100 focus:outline-none focus:text-white focus:border-white transition duration-150 ease-in-out">
-                                Home
-                            </a>
-                            <a href="{{ route('products.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-white hover:text-indigo-100 hover:border-indigo-100 focus:outline-none focus:text-white focus:border-white transition duration-150 ease-in-out">
-                                Products
-                            </a>
-                            <a href="{{ route('about') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-white hover:text-indigo-100 hover:border-indigo-100 focus:outline-none focus:text-white focus:border-white transition duration-150 ease-in-out">
-                                About
-                            </a>
-                            <a href="{{ route('contact') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-white hover:text-indigo-100 hover:border-indigo-100 focus:outline-none focus:text-white focus:border-white transition duration-150 ease-in-out">
-                                Contact
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- User / Cart Menu -->
-                    <div class="hidden sm:flex sm:items-center sm:ml-6 space-x-4">
-                        <!-- Shopping Cart -->
-                        <a href="{{ route('cart.index') }}" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-700 hover:bg-indigo-800 focus:outline-none focus:bg-indigo-800 transition ease-in-out duration-150">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                            Cart
-                            @auth
-                                <span class="ml-1 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-rose-500 text-white">
-                                    {{ auth()->user()->cartItems()->count() }}
-                                </span>
-                            @endauth
-                        </a>
-
-                        @guest
-                            <a href="{{ route('login') }}" class="text-white hover:text-indigo-100">Login</a>
-                            <a href="{{ route('register') }}" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 focus:outline-none focus:bg-indigo-50 active:bg-indigo-50 transition ease-in-out duration-150">
-                                Register
-                            </a>                        @else
-                            <div class="relative" x-data="{ open: false }">
-                                <div>
-                                    <button @click="open = !open" class="flex items-center text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-indigo-300 transition duration-150 ease-in-out">
-                                        <div class="h-8 w-8 rounded-full bg-indigo-800 flex items-center justify-center">
-                                            <span class="text-white font-bold">{{ substr(Auth::user()->name, 0, 1) }}</span>
-                                        </div>
-                                    </button>
-                                </div>
-                                <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 rounded-md shadow-lg origin-top-right z-10">                                    <div class="rounded-md bg-white shadow-md py-1">
-                                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
-                                            Profile
-                                        </a>
-                                        <form method="POST" action="{{ route('logout') }}">
-                                            @csrf
-                                            <button type="submit" class="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
-                                                Logout
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        @endguest
-                    </div>
-
-                    <!-- Hamburger Menu Button (Mobile) -->
-                    <div class="-mr-2 flex items-center sm:hidden">
-                        <button @click="open = !open" class="inline-flex items-center justify-center p-2 rounded-md text-indigo-100 hover:text-white hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700 focus:text-white transition duration-150 ease-in-out">
-                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                <path :class="{'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                                <path :class="{'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mobile Navigation Menu -->
-            <div :class="{'block': open, 'hidden': !open}" class="hidden sm:hidden">
-                <div class="pt-2 pb-3 space-y-1">
-                    <a href="{{ route('home') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:text-white hover:bg-indigo-700 hover:border-indigo-300 focus:outline-none focus:text-white focus:bg-indigo-700 focus:border-indigo-300 transition duration-150 ease-in-out">
-                        Home
-                    </a>
-                    <a href="{{ route('products.index') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:text-white hover:bg-indigo-700 hover:border-indigo-300 focus:outline-none focus:text-white focus:bg-indigo-700 focus:border-indigo-300 transition duration-150 ease-in-out">
-                        Products
-                    </a>
-                    <a href="{{ route('about') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:text-white hover:bg-indigo-700 hover:border-indigo-300 focus:outline-none focus:text-white focus:bg-indigo-700 focus:border-indigo-300 transition duration-150 ease-in-out">
-                        About
-                    </a>
-                    <a href="{{ route('contact') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:text-white hover:bg-indigo-700 hover:border-indigo-300 focus:outline-none focus:text-white focus:bg-indigo-700 focus:border-indigo-300 transition duration-150 ease-in-out">
-                        Contact
-                    </a>
-                    <a href="{{ route('cart.index') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:text-white hover:bg-indigo-700 hover:border-indigo-300 focus:outline-none focus:text-white focus:bg-indigo-700 focus:border-indigo-300 transition duration-150 ease-in-out">
-                        Cart 
-                        @auth
-                            <span class="ml-1 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-rose-500 text-white">
-                                {{ auth()->user()->cartItems()->count() }}
-                            </span>
-                        @endauth
-                    </a>
-                </div>
-
-                <!-- Mobile User Menu -->
-                @auth
-                    <div class="pt-4 pb-1 border-t border-indigo-700">                        <div class="flex items-center px-4">
-                            <div class="flex-shrink-0">
-                                <div class="h-10 w-10 rounded-full bg-indigo-800 flex items-center justify-center">
-                                    <span class="text-white font-bold">{{ substr(Auth::user()->name, 0, 1) }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-3 space-y-1">
-                            <a href="{{ route('profile.edit') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:text-white hover:bg-indigo-700 hover:border-indigo-300 focus:outline-none focus:text-white focus:bg-indigo-700 focus:border-indigo-300 transition duration-150 ease-in-out">
-                                Profile
-                            </a>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="block w-full text-left pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:text-white hover:bg-indigo-700 hover:border-indigo-300 focus:outline-none focus:text-white focus:bg-indigo-700 focus:border-indigo-300 transition duration-150 ease-in-out">
-                                    Logout
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                @else
-                    <div class="pt-4 pb-1 border-t border-indigo-700">
-                        <div class="mt-3 space-y-1">
-                            <a href="{{ route('login') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:text-white hover:bg-indigo-700 hover:border-indigo-300 focus:outline-none focus:text-white focus:bg-indigo-700 focus:border-indigo-300 transition duration-150 ease-in-out">
-                                Login
-                            </a>
-                            <a href="{{ route('register') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:text-white hover:bg-indigo-700 hover:border-indigo-300 focus:outline-none focus:text-white focus:bg-indigo-700 focus:border-indigo-300 transition duration-150 ease-in-out">
-                                Register
-                            </a>
-                        </div>
-                    </div>
-                @endauth
-            </div>
-        </nav>
+        @include('layouts.navbar')
 
         <!-- Flash Messages -->
         @if (session('success'))
@@ -311,5 +167,7 @@
             </div>
         </footer>
     </div>
+    <!-- Scripts Stack -->
+    @stack('scripts')
 </body>
 </html>

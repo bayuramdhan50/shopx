@@ -17,18 +17,18 @@ class CartController extends Controller
     public function index(): View
     {
         $cartItems = Auth::user()->cartItems()->with('product')->get();
-        
+
         // Calculate cart total
         $total = $cartItems->sum(function ($item) {
             return $item->product->price * $item->quantity;
         });
-        
+
         return view('cart.index', [
             'cartItems' => $cartItems,
             'total' => $total,
         ]);
     }
-    
+
     /**
      * Add a product to the cart
      */
@@ -37,15 +37,15 @@ class CartController extends Controller
         $request->validate([
             'quantity' => 'required|integer|min:1|max:10',
         ]);
-        
+
         $userId = Auth::id();
         $quantity = $request->quantity;
-        
+
         // Check if product already in cart
         $cartItem = CartItem::where('user_id', $userId)
             ->where('product_id', $product->id)
             ->first();
-            
+
         if ($cartItem) {
             // Update quantity if product already in cart
             $cartItem->quantity += $quantity;
@@ -58,11 +58,11 @@ class CartController extends Controller
                 'quantity' => $quantity,
             ]);
         }
-        
+
         return redirect()->route('cart.index')
             ->with('success', $product->name . ' has been added to your cart.');
     }
-    
+
     /**
      * Update the quantity of a cart item
      */
@@ -73,18 +73,18 @@ class CartController extends Controller
             return redirect()->route('cart.index')
                 ->with('error', 'You do not have permission to update this cart item.');
         }
-        
+
         $request->validate([
             'quantity' => 'required|integer|min:1|max:10',
         ]);
-        
+
         $cartItem->quantity = $request->quantity;
         $cartItem->save();
-        
+
         return redirect()->route('cart.index')
             ->with('success', 'Cart has been updated.');
     }
-    
+
     /**
      * Remove an item from the cart
      */
@@ -95,51 +95,37 @@ class CartController extends Controller
             return redirect()->route('cart.index')
                 ->with('error', 'You do not have permission to remove this cart item.');
         }
-        
+
         $cartItem->delete();
-        
+
         return redirect()->route('cart.index')
             ->with('success', 'Item has been removed from your cart.');
     }
-    
+
     /**
      * Clear the entire cart
      */
     public function clear(): RedirectResponse
     {
         Auth::user()->cartItems()->delete();
-        
+
         return redirect()->route('cart.index')
             ->with('success', 'Your cart has been cleared.');
     }
-    
+
     /**
      * Proceed to checkout
      */
-    public function checkout(): View|RedirectResponse
+    public function checkout(): RedirectResponse
     {
         $cartItems = Auth::user()->cartItems()->with('product')->get();
-        
+
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart.index')
                 ->with('error', 'Your cart is empty. Add some products before checking out.');
         }
-        
-        // Calculate cart total
-        $total = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
-        
-        // Get user's saved payment methods
-        $paymentMethods = Auth::user()->paymentMethods;
-        $defaultPaymentMethod = $paymentMethods->where('is_default', true)->first();
-        
-        return view('cart.checkout', [
-            'cartItems' => $cartItems,
-            'total' => $total,
-            'user' => Auth::user(),
-            'paymentMethods' => $paymentMethods,
-            'defaultPaymentMethod' => $defaultPaymentMethod,
-        ]);
+
+        // Redirect to the new checkout route
+        return redirect()->route('checkout.index');
     }
 }

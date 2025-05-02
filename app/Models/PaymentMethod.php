@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 
 class PaymentMethod extends Model
 {
@@ -23,7 +24,28 @@ class PaymentMethod extends Model
         'type',
         'encrypted_details',
         'is_default',
-    ];
+    ];    /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            Log::info('Creating new payment method', [
+                'user_id' => $model->user_id,
+                'name' => $model->name,
+                'type' => $model->type
+            ]);
+        });
+
+        static::created(function ($model) {
+            Log::info('Payment method created successfully', [
+                'id' => $model->id,
+                'user_id' => $model->user_id
+            ]);
+        });
+    }
 
     /**
      * The attributes that should be cast.
@@ -57,11 +79,11 @@ class PaymentMethod extends Model
     public function getMaskedCardNumber(): string
     {
         $details = json_decode($this->encrypted_details, true);
-        
+
         if (!isset($details['card_number'])) {
             return 'N/A';
         }
-        
+
         $cardNumber = $details['card_number'];
         $lastFour = substr($cardNumber, -4);
         return "•••• •••• •••• " . $lastFour;
@@ -73,11 +95,11 @@ class PaymentMethod extends Model
     public function getExpiryDate(): string
     {
         $details = json_decode($this->encrypted_details, true);
-        
+
         if (!isset($details['expiry_month']) || !isset($details['expiry_year'])) {
             return 'N/A';
         }
-        
+
         return $details['expiry_month'] . '/' . $details['expiry_year'];
     }
 

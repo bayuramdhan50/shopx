@@ -6,6 +6,7 @@ use App\Models\PaymentMethod;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class PaymentMethodController extends Controller
@@ -17,7 +18,7 @@ class PaymentMethodController extends Controller
     {
         $user = Auth::user();
         $paymentMethods = $user->paymentMethods;
-        
+
         return view('payment_methods.index', compact('paymentMethods'));
     }
 
@@ -34,6 +35,12 @@ class PaymentMethodController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // Log incoming request data for debugging
+        Log::info('Payment method store request received', [
+            'data' => $request->all(),
+            'user' => Auth::id()
+        ]);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|string|in:credit_card,debit_card,bank_transfer',
@@ -46,12 +53,12 @@ class PaymentMethodController extends Controller
             'account_number' => 'required_if:type,bank_transfer|string|max:30',
             'account_holder' => 'required_if:type,bank_transfer|string|max:255',
         ]);
-        
+
         $user = Auth::user();
-        
+
         // Prepare the payment details based on the type
         $encryptedDetails = [];
-        
+
         if (in_array($request->type, ['credit_card', 'debit_card'])) {
             $encryptedDetails = [
                 'card_number' => $request->card_number,
@@ -67,10 +74,10 @@ class PaymentMethodController extends Controller
                 'account_holder' => $request->account_holder,
             ];
         }
-        
+
         // Make this method the default if it's the first one
         $isDefault = $user->paymentMethods()->count() === 0;
-        
+
         // Create payment method
         $paymentMethod = new PaymentMethod([
             'user_id' => $user->id,
@@ -79,11 +86,16 @@ class PaymentMethodController extends Controller
             'encrypted_details' => json_encode($encryptedDetails),
             'is_default' => $isDefault,
         ]);
-        
-        $paymentMethod->save();
-        
+          $paymentMethod->save();
+
+        Log::info('Payment method saved successfully', [
+            'user_id' => $user->id,
+            'payment_method_id' => $paymentMethod->id,
+            'type' => $request->type
+        ]);
+
         return redirect()->route('payment-methods.index')
-            ->with('success', 'Payment method added successfully.');
+            ->with('success', 'Metode pembayaran berhasil ditambahkan.');
     }
 
     /**
@@ -95,25 +107,25 @@ class PaymentMethodController extends Controller
         if ($paymentMethod->user_id !== Auth::id()) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         // If the deleted method was default, set another one as default
         if ($paymentMethod->is_default) {
             $newDefault = Auth::user()->paymentMethods()
                 ->where('id', '!=', $paymentMethod->id)
                 ->first();
-                
+
             if ($newDefault) {
                 $newDefault->is_default = true;
                 $newDefault->save();
             }
         }
-        
+
         $paymentMethod->delete();
-        
+
         return redirect()->route('payment-methods.index')
             ->with('success', 'Payment method deleted successfully.');
     }
-    
+
     /**
      * Set a payment method as default.
      */
@@ -123,16 +135,16 @@ class PaymentMethodController extends Controller
         if ($paymentMethod->user_id !== Auth::id()) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         // Update the current default method
         Auth::user()->paymentMethods()
             ->where('is_default', true)
             ->update(['is_default' => false]);
-        
+
         // Set the new default
         $paymentMethod->is_default = true;
         $paymentMethod->save();
-        
+
         return redirect()->route('payment-methods.index')
             ->with('success', 'Default payment method updated successfully.');
     }

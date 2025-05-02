@@ -1,18 +1,17 @@
-<x-layouts.main>
-    <x-slot name="title">Payment Methods</x-slot>
+<x-layouts.main>    <x-slot name="title">Metode Pembayaran</x-slot>
 
     <div class="bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="flex justify-between items-center mb-8">
-                <h1 class="text-3xl font-bold text-gray-900">Payment Methods</h1>
+                <h1 class="text-3xl font-bold text-gray-900">Metode Pembayaran</h1>
                 <a href="{{ route('payment-methods.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                     </svg>
-                    Add Payment Method
+                    Tambah Metode Pembayaran
                 </a>
             </div>
-            
+
             @if (session('success'))
                 <div class="rounded-md bg-green-50 p-4 mb-6">
                     <div class="flex">
@@ -27,16 +26,15 @@
                     </div>
                 </div>
             @endif
-            
+
             @if ($paymentMethods->isEmpty())
-                <div class="bg-gray-50 rounded-lg p-8 text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="bg-gray-50 rounded-lg p-8 text-center">                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                     </svg>
-                    <h2 class="text-xl font-medium text-gray-900 mb-2">No payment methods yet</h2>
-                    <p class="text-gray-500 mb-6">Add a payment method to speed up your checkout process.</p>
+                    <h2 class="text-xl font-medium text-gray-900 mb-2">Belum ada metode pembayaran</h2>
+                    <p class="text-gray-500 mb-6">Tambahkan metode pembayaran untuk mempercepat proses checkout Anda.</p>
                     <a href="{{ route('payment-methods.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Add Payment Method
+                        Tambah Metode Pembayaran
                     </a>
                 </div>
             @else
@@ -82,7 +80,7 @@
                                                 </button>
                                             </form>
                                         @endif
-                                        
+
                                         <form action="{{ route('payment-methods.destroy', $method) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this payment method?');">
                                             @csrf
                                             @method('DELETE')

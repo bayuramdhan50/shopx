@@ -15,12 +15,12 @@
                                     <path fill="#ffffff" fill-opacity="1" d="M0,192L48,176C96,160,192,128,288,138.7C384,149,480,203,576,224C672,245,768,235,864,208C960,181,1056,139,1152,133.3C1248,128,1344,160,1392,176L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
                                 </svg>
                             </div>
-                            
+
                             <!-- Animated Dots Pattern -->
                             <div class="absolute inset-0 z-0 opacity-10">
                                 <div class="absolute inset-0" style="background-image: radial-gradient(white 1px, transparent 2px); background-size: 30px 30px;"></div>
                             </div>
-                            
+
                             <!-- Content Container -->
                             <div class="absolute inset-0 flex items-center">
                                 <div class="mx-8 md:mx-16 lg:mx-24 max-w-xl z-10">
@@ -31,18 +31,18 @@
                                         </svg>
                                         PROMO SPESIAL
                                     </span>
-                                    
+
                                     <!-- Heading -->
                                     <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
                                         Flash Sale! <br class="hidden md:block">
                                         <span class="text-yellow-300">Diskon hingga 40%</span>
                                     </h2>
-                                    
+
                                     <!-- Description -->
                                     <p class="text-white text-lg mb-8 opacity-90 max-w-md">
                                         Dapatkan penawaran terbaik untuk produk elektronik terbaru dengan jaminan keamanan dan kualitas terbaik
                                     </p>
-                                    
+
                                     <!-- CTA Button -->
                                     <a href="{{ route('products.index') }}" class="inline-flex items-center px-6 py-3 bg-white text-indigo-600 font-medium rounded-lg shadow-md hover:bg-indigo-50 transition duration-300 transform hover:scale-105">
                                         <span>Belanja Sekarang</span>
@@ -51,16 +51,16 @@
                                         </svg>
                                     </a>
                                 </div>
-                                
+
                                 <!-- Product Image -->
                                 <div class="hidden md:block relative ml-auto h-full">
                                     <!-- Image Container with Shadow and Animation -->
                                     <div class="absolute right-0 h-full flex items-center pr-12 transform transition-all duration-500 hover:scale-105">
                                         <div class="relative">
                                             <div class="absolute -inset-4 bg-white opacity-10 rounded-3xl blur-xl"></div>
-                                            <img 
-                                                src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                                                alt="Electronics on Sale" 
+                                            <img
+                                                src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                                                alt="Electronics on Sale"
                                                 class="max-h-80 max-w-sm object-contain rounded-lg z-10 relative">
                                         </div>
                                     </div>
@@ -68,7 +68,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Banner 2 - New Products -->
                     <div class="swiper-slide">
                         <div class="relative h-72 md:h-96 lg:h-[28rem] w-full bg-gradient-to-r from-purple-700 via-purple-600 to-pink-600 rounded-xl overflow-hidden">
@@ -78,12 +78,12 @@
                                     <path fill="#ffffff" fill-opacity="1" d="M0,192L48,176C96,160,192,128,288,138.7C384,149,480,203,576,224C672,245,768,235,864,208C960,181,1056,139,1152,133.3C1248,128,1344,160,1392,176L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
                                 </svg>
                             </div>
-                            
+
                             <!-- Animated Circle Pattern -->
                             <div class="absolute inset-0 z-0 opacity-10">
                                 <div class="absolute inset-0" style="background-image: radial-gradient(circle, white, transparent 8px); background-size: 60px 60px;"></div>
                             </div>
-                            
+
                             <!-- Content Container -->
                             <div class="absolute inset-0 flex items-center">
                                 <div class="mx-8 md:mx-16 lg:mx-24 max-w-xl z-10">
@@ -94,18 +94,18 @@
                                         </svg>
                                         BARU DILUNCURKAN
                                     </span>
-                                    
+
                                     <!-- Heading -->
                                     <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
                                         Produk Terbaru <br class="hidden md:block">
                                         <span class="text-pink-200">Teknologi 2025</span>
                                     </h2>
-                                    
+
                                     <!-- Description -->
                                     <p class="text-white text-lg mb-8 opacity-90 max-w-md">
                                         Temukan teknologi terkini dengan fitur keamanan tingkat tinggi dan performa maksimal untuk kebutuhan Anda
                                     </p>
-                                    
+
                                     <!-- CTA Button -->
                                     <a href="{{ route('products.index') }}" class="inline-flex items-center px-6 py-3 bg-white text-purple-600 font-medium rounded-lg shadow-md hover:bg-purple-50 transition duration-300 transform hover:scale-105">
                                         <span>Lihat Koleksi</span>
@@ -114,16 +114,16 @@
                                         </svg>
                                     </a>
                                 </div>
-                                
+
                                 <!-- Product Image -->
                                 <div class="hidden md:block relative ml-auto h-full">
                                     <!-- Image Container with Glow Effect -->
                                     <div class="absolute right-0 h-full flex items-center pr-12 transform transition-all duration-500 hover:scale-105">
                                         <div class="relative">
                                             <div class="absolute -inset-4 bg-white opacity-10 rounded-3xl blur-xl"></div>
-                                            <img 
-                                                src="https://images.unsplash.com/photo-1593344484962-796055d4a3a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                                                alt="New Technology Products" 
+                                            <img
+                                                src="https://images.unsplash.com/photo-1593344484962-796055d4a3a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                                                alt="New Technology Products"
                                                 class="max-h-80 max-w-sm object-contain rounded-lg z-10 relative">
                                         </div>
                                     </div>
@@ -132,10 +132,10 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Navigation Elements -->
                 <div class="swiper-pagination"></div>
-                
+
                 <!-- Custom Navigation Buttons -->
                 <div class="swiper-button-next after:content-[''] flex justify-center items-center w-10 h-10 bg-white bg-opacity-30 backdrop-blur-sm rounded-full text-white hover:bg-opacity-50 transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -159,7 +159,7 @@
                 @php
                     $categories = \App\Models\Category::where('is_active', true)->take(6)->get();
                 @endphp
-                
+
                 @foreach($categories as $category)
                 <a href="{{ route('products.index', ['category' => json_encode($category)]) }}" class="flex flex-col items-center group">
                     <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mb-2 group-hover:bg-indigo-200 transition-all">
@@ -200,12 +200,12 @@
                     <span class="bg-gray-900 text-white px-2 py-1 rounded">59</span>
                 </div>
             </div>
-            
+
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 @php
                     $flashSaleProducts = \App\Models\Product::where('featured', true)->inRandomOrder()->take(6)->get();
                 @endphp
-                
+
                 @foreach($flashSaleProducts as $product)
                 <a href="{{ route('products.show', $product) }}" class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow group">
                     <div class="relative">
@@ -227,7 +227,7 @@
                 </a>
                 @endforeach
             </div>
-            
+
             <div class="text-center mt-6">
                 <a href="{{ route('products.index', ['sort' => 'price_low']) }}" class="inline-flex items-center text-indigo-600 hover:text-indigo-800">
                     Lihat Semua Promo
@@ -239,6 +239,20 @@
         </div>
     </section>
 
+    <!-- View All Products CTA -->
+    <section class="py-10 bg-indigo-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Jelajahi Semua Produk Kami</h2>
+            <p class="text-lg text-gray-600 mb-6 max-w-3xl mx-auto">Temukan beragam produk berkualitas tinggi dengan harga terbaik untuk memenuhi kebutuhan Anda</p>
+            <a href="{{ route('products.index') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all">
+                Lihat Semua Produk
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        </div>
+    </section>
+
     <!-- Latest Products Section -->
     <section class="py-8 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -246,18 +260,18 @@
                 <h2 class="text-2xl font-bold text-gray-900">Produk Terbaru</h2>
                 <a href="{{ route('products.index', ['sort' => 'newest']) }}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Lihat Semua</a>
             </div>
-            
+
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                 @php
                     $latestProducts = \App\Models\Product::orderBy('created_at', 'desc')->take(10)->get();
                 @endphp
-                
+
                 @foreach($latestProducts as $product)
                 <a href="{{ route('products.show', $product) }}" class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow group">
                     <div class="relative overflow-hidden">
                         <img src="{{ product_image($product->image) }}" alt="{{ $product->name }}" class="w-full h-48 object-cover">
                     </div>
-                    
+
                     <div class="p-3">
                         <div class="flex items-center space-x-1 mb-1">
                             <span class="text-xs text-gray-600">{{ $product->category->name ?? 'Uncategorized' }}</span>
@@ -274,6 +288,16 @@
                 </a>
                 @endforeach
             </div>
+
+            <!-- View All Products Button -->
+            <div class="mt-8 text-center">
+                <a href="{{ route('products.index') }}" class="inline-flex items-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Lihat Semua Produk
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
         </div>
     </section>
 
@@ -285,7 +309,7 @@
                 @php
                     $brands = \App\Models\Product::select('brand')->distinct()->take(12)->pluck('brand');
                 @endphp
-                
+
                 @foreach($brands as $brand)
                 <a href="{{ route('products.index', ['brand' => $brand]) }}" class="flex flex-col items-center group">
                     <div class="w-full h-20 bg-white rounded-lg shadow-sm flex items-center justify-center p-4 group-hover:shadow-md transition-all">
@@ -293,6 +317,16 @@
                     </div>
                 </a>
                 @endforeach
+            </div>
+
+            <!-- View All Brands Button -->
+            <div class="mt-6 text-center">
+                <a href="{{ route('products.index') }}" class="inline-flex items-center px-4 py-2 border border-indigo-600 text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Lihat Semua Brand
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </a>
             </div>
         </div>
     </section>
@@ -304,18 +338,18 @@
                 <h2 class="text-2xl font-bold text-gray-900">Rekomendasi Untukmu</h2>
                 <a href="{{ route('products.index') }}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Lihat Semua</a>
             </div>
-            
+
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                 @php
                     $recommendedProducts = \App\Models\Product::inRandomOrder()->take(10)->get();
                 @endphp
-                
+
                 @foreach($recommendedProducts as $product)
                 <a href="{{ route('products.show', $product) }}" class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow group">
                     <div class="relative overflow-hidden">
                         <img src="{{ product_image($product->image) }}" alt="{{ $product->name }}" class="w-full h-48 object-cover">
                     </div>
-                    
+
                     <div class="p-3">
                         <div class="flex items-center space-x-1 mb-1">
                             <span class="text-xs text-gray-600">{{ $product->category->name ?? 'Uncategorized' }}</span>
@@ -403,7 +437,7 @@
     <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Featured Products</h2>
-            
+
             @if($featuredProducts->isEmpty())
                 <div class="text-center py-8">
                     <p class="text-gray-500">No featured products available at the moment.</p>
@@ -447,7 +481,7 @@
     <section class="py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Why Choose ShopX?</h2>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="bg-white p-8 rounded-xl shadow-md text-center">
                     <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -458,7 +492,7 @@
                     <h3 class="text-xl font-semibold mb-3">Secure Encryption</h3>
                     <p class="text-gray-600">All your personal and payment information is encrypted using AES-256 encryption technology.</p>
                 </div>
-                
+
                 <div class="bg-white p-8 rounded-xl shadow-md text-center">
                     <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -468,7 +502,7 @@
                     <h3 class="text-xl font-semibold mb-3">Quality Products</h3>
                     <p class="text-gray-600">We source only the best electronics from trusted manufacturers with proper warranties.</p>
                 </div>
-                
+
                 <div class="bg-white p-8 rounded-xl shadow-md text-center">
                     <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -486,7 +520,7 @@
     <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">What Our Customers Say</h2>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="bg-gray-50 p-8 rounded-xl shadow-sm">
                     <div class="flex items-center mb-4">
@@ -516,7 +550,7 @@
                     </div>
                     <p class="text-gray-600">"I love how secure I feel when shopping at ShopX. The encryption of my personal data gives me peace of mind, and the products are top-notch!"</p>
                 </div>
-                
+
                 <div class="bg-gray-50 p-8 rounded-xl shadow-sm">
                     <div class="flex items-center mb-4">
                         <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mr-4">
@@ -545,7 +579,7 @@
                     </div>
                     <p class="text-gray-600">"The checkout process with Midtrans was smooth and secure. I received my gaming laptop in perfect condition and it works amazingly well!"</p>
                 </div>
-                
+
                 <div class="bg-gray-50 p-8 rounded-xl shadow-sm">
                     <div class="flex items-center mb-4">
                         <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mr-4">
