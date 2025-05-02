@@ -7,6 +7,32 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+# ShopX - Aplikasi E-Commerce Aman
+
+ShopX adalah aplikasi e-commerce yang menerapkan praktik keamanan terbaik, termasuk enkripsi data sensitif menggunakan AES-256 dan perlindungan terhadap serangan umum web.
+
+## Fitur Utama
+
+- Katalog produk dengan kategori
+- Keranjang belanja
+- Proses checkout yang aman
+- Sistem pembayaran dengan enkripsi data kartu/rekening
+- Panel admin untuk mengelola produk dan pesanan
+- Profil pengguna dengan enkripsi data sensitif
+
+## Keamanan
+
+- Enkripsi AES-256 untuk data sensitif (detail pembayaran, dll)
+- CSRF protection
+- XSS prevention
+- Input validation & sanitization
+- Secure sessions
+- Rate limiting
+
+## Instalasi & Troubleshooting
+
+Untuk petunjuk instalasi lengkap dan pemecahan masalah (termasuk error "could not find driver mysql"), lihat [Panduan Setup](SETUP-GUIDE.md).
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

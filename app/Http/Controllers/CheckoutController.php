@@ -30,9 +30,12 @@ class CheckoutController extends Controller
             $subtotal += $cartItem->quantity * $cartItem->product->price;
         }
 
+        // For now, total equals subtotal (no shipping or tax costs)
+        $total = $subtotal;
+
         // Get user's payment methods
         $paymentMethods = $user->paymentMethods()->get();
 
-        return view('cart.checkout', compact('user', 'cartItems', 'subtotal', 'paymentMethods'));
+        return view('cart.checkout', compact('user', 'cartItems', 'subtotal', 'total', 'paymentMethods'));
     }
 }
