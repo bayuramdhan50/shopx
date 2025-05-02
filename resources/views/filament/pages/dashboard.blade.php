@@ -411,14 +411,18 @@
             // Monthly Sales Comparison Chart
             @if($hasMonthlyData ?? false)
                 const monthlyCtx = document.getElementById('monthlyComparisonChart').getContext('2d');
-                  // Prepare data arrays with zero for missing months
-                let currentYearValues = [];
-                let previousYearValues = [];
+                // Prepare data arrays with zero for missing months
+                let currentYearValues = [
+                    @for($month = 1; $month <= 12; $month++)
+                        {{ isset($currentYearData[$month]) ? $currentYearData[$month] : 0 }}{{ $month < 12 ? ',' : '' }}
+                    @endfor
+                ];
                 
-                for (let i = 1; i <= 12; i++) {
-                    currentYearValues.push({{ isset($currentYearData[$i]) ? $currentYearData[$i] : 0 }});
-                    previousYearValues.push({{ isset($previousYearData[$i]) ? $previousYearData[$i] : 0 }});
-                }
+                let previousYearValues = [
+                    @for($month = 1; $month <= 12; $month++)
+                        {{ isset($previousYearData[$month]) ? $previousYearData[$month] : 0 }}{{ $month < 12 ? ',' : '' }}
+                    @endfor
+                ];
                 
                 new Chart(monthlyCtx, {
                     type: 'bar',

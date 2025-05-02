@@ -43,8 +43,11 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+        // Hapus autologin yang menyebabkan pengguna langsung masuk dashboard
+        // Auth::login($user);
+        
+        // Redirect ke halaman login dengan pesan sukses
+        return redirect()->route('login')
+            ->with('status', 'Account created successfully! Please login with your credentials.');
     }
 }
