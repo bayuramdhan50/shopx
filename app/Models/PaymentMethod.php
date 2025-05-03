@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\Security\EnhancedEncryptionService;
 use App\Traits\Encryptable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,7 +25,16 @@ class PaymentMethod extends Model
         'type',
         'encrypted_details',
         'is_default',
-    ];    /**
+    ];    
+    
+    /**
+     * Layanan enkripsi yang ditingkatkan.
+     * 
+     * @var EnhancedEncryptionService|null
+     */
+    protected $enhancedEncryption = null;
+    
+    /**
      * Boot the model.
      */
     protected static function boot()
@@ -64,6 +74,69 @@ class PaymentMethod extends Model
     protected $encryptable = [
         'encrypted_details',
     ];
+    
+    /**
+     * Override metode setEncryptedDetailsAttribute untuk menggunakan enkripsi yang diperkuat.
+     * 
+     * @param string $value
+     * @return void
+     */
+    public function setEncryptedDetailsAttribute($value)
+    {
+        // Hanya enkripsi jika nilai tidak kosong
+        if (!empty($value)) {
+            // Gunakan enkripsi yang ditingkatkan untuk data pembayaran yang sensitif
+            $encryptor = $this->getEnhancedEncryption();
+            
+            // Tambahkan user_id sebagai konteks tambahan untuk meningkatkan keamanan
+            $context = "payment_details_user_" . $this->user_id;
+            
+            // Enkripsi data dengan metode yang diperkuat
+            $this->attributes['encrypted_details'] = $encryptor->encrypt($value, $context);
+        } else {
+            $this->attributes['encrypted_details'] = $value;
+        }
+    }
+    
+    /**
+     * Override metode getEncryptedDetailsAttribute untuk mendekripsi data dengan metode yang tepat.
+     * 
+     * @param string $value
+     * @return string
+     */
+    public function getEncryptedDetailsAttribute($value)
+    {
+        // Jika nilai kosong, kembalikan apa adanya
+        if (empty($value)) {
+            return $value;
+        }
+        
+        $encryptor = $this->getEnhancedEncryption();
+        
+        // Cek apakah data dienkripsi dengan metode yang ditingkatkan
+        if ($encryptor->isEnhancedEncryption($value)) {
+            // Dekripsi dengan metode yang ditingkatkan
+            $context = "payment_details_user_" . $this->user_id;
+            return $encryptor->decrypt($value, $context);
+        }
+        
+        // Fallback ke metode dekripsi lama (trait Encryptable)
+        return $this->decryptAttribute($value);
+    }
+    
+    /**
+     * Mendapatkan instance dari layanan enkripsi yang ditingkatkan
+     * 
+     * @return EnhancedEncryptionService
+     */
+    protected function getEnhancedEncryption()
+    {
+        if ($this->enhancedEncryption === null) {
+            $this->enhancedEncryption = new EnhancedEncryptionService();
+        }
+        
+        return $this->enhancedEncryption;
+    }
 
     /**
      * Get the user that owns the payment method
