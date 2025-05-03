@@ -167,7 +167,7 @@ php artisan serve
 
 ### Login Admin
 - Email: admin@shopx.com
-- Password: admin123
+- Password: admin123 or password123
 
 ## Struktur Proyek
 
