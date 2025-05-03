@@ -161,7 +161,7 @@
             <div class="text-xl font-bold mb-4">Top Products</div>
             @php
                 $topProducts = App\Models\OrderItem::select('product_id', DB::raw('SUM(quantity) as total_quantity'))
-                    ->with('product:id,name')
+                    ->with('product:id,name,image')
                     ->whereHas('order', function ($query) {
                         $query->where('status', 'completed');
                     })
@@ -256,6 +256,52 @@
             @endif
         </div>
     </div>
+    
+    {{-- Featured Products with Images --}}
+    <div class="mt-6">
+        <div class="bg-white dark:bg-gray-800 shadow rounded-xl p-6">
+            <div class="text-xl font-bold mb-4">Featured Products</div>
+            
+            @php
+                $featuredProducts = App\Models\Product::where('featured', true)
+                    ->orWhere(function($query) {
+                        $query->whereHas('orderItems', function($q) {
+                            $q->whereHas('order', function($o) {
+                                $o->where('status', 'completed');
+                            })->select('product_id', DB::raw('count(*) as total'))
+                            ->groupBy('product_id')
+                            ->orderBy('total', 'desc');
+                        });
+                    })
+                    ->limit(6)
+                    ->get();
+            @endphp
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                @forelse($featuredProducts as $product)
+                    <div class="bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden flex flex-col">
+                        <div class="h-36 overflow-hidden">
+                            <img src="{{ product_image($product->image) }}" alt="{{ $product->name }}" 
+                                class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <div class="p-3">
+                            <h3 class="text-sm font-medium text-gray-900 dark:text-white truncate" title="{{ $product->name }}">
+                                {{ $product->name }}
+                            </h3>
+                            <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                                Rp {{ number_format($product->price, 0, ',', '.') }}
+                            </p>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-full text-center text-gray-500 dark:text-gray-400 py-8">
+                        No featured products available yet
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    </div>
+    
       {{-- Include Chart.js --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       {{-- Initialize Charts and Welcome Notification --}}

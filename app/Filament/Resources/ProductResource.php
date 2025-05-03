@@ -107,7 +107,9 @@ class ProductResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Image')
-                    ->circular(),
+                    ->circular()
+                    ->extraImgAttributes(['loading' => 'lazy'])
+                    ->extraAttributes(['class' => 'object-cover']),
                     
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()

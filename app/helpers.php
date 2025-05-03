@@ -25,3 +25,16 @@ if (!function_exists('category_image')) {
         return \App\Services\ImageService::getCategoryImageUrl($imagePath);
     }
 }
+
+if (!function_exists('user_avatar')) {
+    /**
+     * Get user avatar URL with fallback
+     *
+     * @param string|null $imagePath
+     * @return string
+     */
+    function user_avatar(?string $imagePath): string
+    {
+        return \App\Services\ImageService::getUserAvatarUrl($imagePath);
+    }
+}
