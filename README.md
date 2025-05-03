@@ -166,7 +166,6 @@ php artisan serve
 ```
 
 ### Login Admin
-URL: `/admin`
 - Email: admin@shopx.com
 - Password: password123
 
