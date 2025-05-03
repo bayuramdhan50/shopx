@@ -49,6 +49,8 @@ class PaymentMethodController extends Controller
             'expiry_year' => 'required_if:type,credit_card,debit_card|string|size:2',
             'cvv' => 'required_if:type,credit_card,debit_card|string|min:3|max:4',
             'card_holder' => 'required_if:type,credit_card,debit_card|string|max:255',
+            'use_enhanced_security' => 'nullable|in:0,1,true,false,on',
+            'cvv_enhanced' => 'required_if:use_enhanced_security,1,true,on|string|min:3|max:4',
             'bank_name' => 'required_if:type,bank_transfer|string|max:255',
             'account_number' => 'required_if:type,bank_transfer|string|max:30',
             'account_holder' => 'required_if:type,bank_transfer|string|max:255',
@@ -86,12 +88,26 @@ class PaymentMethodController extends Controller
             'encrypted_details' => json_encode($encryptedDetails),
             'is_default' => $isDefault,
         ]);
-          $paymentMethod->save();
+
+        // Jika opsi keamanan tingkat lanjut digunakan, simpan CVV dengan enkripsi PBKDF2
+        if ($request->has('use_enhanced_security') && $request->use_enhanced_security &&
+            in_array($request->type, ['credit_card', 'debit_card']) && $request->filled('cvv_enhanced')) {
+
+            $paymentMethod->cvv_enhanced = $request->cvv_enhanced;
+
+            Log::info('Enhanced security enabled for payment method', [
+                'user_id' => $user->id,
+                'method' => 'PBKDF2+AES256'
+            ]);
+        }
+
+        $paymentMethod->save();
 
         Log::info('Payment method saved successfully', [
             'user_id' => $user->id,
             'payment_method_id' => $paymentMethod->id,
-            'type' => $request->type
+            'type' => $request->type,
+            'enhanced_security' => $request->has('use_enhanced_security') ? 'yes' : 'no'
         ]);
 
         return redirect()->route('payment-methods.index')

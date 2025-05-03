@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Services\Security\EnhancedEncryptionService;
+use App\Services\Security\PBKDF2Service;
 use App\Traits\Encryptable;
+use App\Traits\EnhancedEncryptable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 class PaymentMethod extends Model
 {
-    use HasFactory, SoftDeletes, Encryptable;
+    use HasFactory, SoftDeletes, Encryptable, EnhancedEncryptable;
 
     /**
      * The attributes that are mass assignable.
@@ -24,16 +25,29 @@ class PaymentMethod extends Model
         'name',
         'type',
         'encrypted_details',
+        'cvv_enhanced', // Kolom baru yang akan menggunakan enkripsi yang lebih kuat dengan PBKDF2
         'is_default',
-    ];    
-    
-    /**
-     * Layanan enkripsi yang ditingkatkan.
-     * 
-     * @var EnhancedEncryptionService|null
+    ];
+
+        /**
+     * Atribut yang harus dienkripsi dengan metode standar (AES-256).
+     *
+     * @var array<string>
      */
+    protected $encryptable = [
+        'encrypted_details',
+    ];
+
+    /**
+     * Atribut yang harus dienkripsi dengan metode yang ditingkatkan (PBKDF2 + AES-256).
+     *
+     * @var array<string>
+     */
+    protected $enhancedEncryptable = [
+        'cvv_enhanced',
+    ];
     protected $enhancedEncryption = null;
-    
+
     /**
      * Boot the model.
      */
@@ -67,17 +81,8 @@ class PaymentMethod extends Model
     ];
 
     /**
-     * The attributes that should be encrypted.
-     *
-     * @var array<string>
-     */
-    protected $encryptable = [
-        'encrypted_details',
-    ];
-    
-    /**
      * Override metode setEncryptedDetailsAttribute untuk menggunakan enkripsi yang diperkuat.
-     * 
+     *
      * @param string $value
      * @return void
      */
@@ -87,20 +92,20 @@ class PaymentMethod extends Model
         if (!empty($value)) {
             // Gunakan enkripsi yang ditingkatkan untuk data pembayaran yang sensitif
             $encryptor = $this->getEnhancedEncryption();
-            
+
             // Tambahkan user_id sebagai konteks tambahan untuk meningkatkan keamanan
             $context = "payment_details_user_" . $this->user_id;
-            
+
             // Enkripsi data dengan metode yang diperkuat
             $this->attributes['encrypted_details'] = $encryptor->encrypt($value, $context);
         } else {
             $this->attributes['encrypted_details'] = $value;
         }
     }
-    
+
     /**
      * Override metode getEncryptedDetailsAttribute untuk mendekripsi data dengan metode yang tepat.
-     * 
+     *
      * @param string $value
      * @return string
      */
@@ -110,31 +115,39 @@ class PaymentMethod extends Model
         if (empty($value)) {
             return $value;
         }
-        
+
         $encryptor = $this->getEnhancedEncryption();
-        
+
         // Cek apakah data dienkripsi dengan metode yang ditingkatkan
         if ($encryptor->isEnhancedEncryption($value)) {
             // Dekripsi dengan metode yang ditingkatkan
             $context = "payment_details_user_" . $this->user_id;
             return $encryptor->decrypt($value, $context);
         }
-        
-        // Fallback ke metode dekripsi lama (trait Encryptable)
-        return $this->decryptAttribute($value);
+
+        // Fallback ke metode dekripsi lama dengan Crypt langsung
+        try {
+            return \Illuminate\Support\Facades\Crypt::decrypt($value);
+        } catch (\Exception $e) {
+            Log::warning('Failed to decrypt payment method details', [
+                'error' => $e->getMessage(),
+                'payment_method_id' => $this->id
+            ]);
+            return $value; // Return raw value if decryption fails
+        }
     }
-    
+
     /**
      * Mendapatkan instance dari layanan enkripsi yang ditingkatkan
-     * 
-     * @return EnhancedEncryptionService
+     *
+     * @return PBKDF2Service
      */
     protected function getEnhancedEncryption()
     {
         if ($this->enhancedEncryption === null) {
-            $this->enhancedEncryption = new EnhancedEncryptionService();
+            $this->enhancedEncryption = app(PBKDF2Service::class);
         }
-        
+
         return $this->enhancedEncryption;
     }
 

@@ -13,7 +13,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Register PBKDF2 service as a singleton
+        $this->app->singleton(\App\Services\Security\PBKDF2Service::class, function ($app) {
+            return new \App\Services\Security\PBKDF2Service();
+        });
     }
 
     /**

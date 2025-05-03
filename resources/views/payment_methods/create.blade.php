@@ -103,9 +103,48 @@
                                 <div class="col-span-1">
                                     <label for="cvv" class="block text-sm font-medium text-gray-700">CVV</label>
                                     <input type="text" name="cvv" id="cvv" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="123" value="{{ old('cvv') }}" maxlength="4">
+                                    <div class="mt-1 text-xs text-gray-500 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Dienkripsi dengan AES-256
+                                    </div>
                                     @error('cvv')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
+                                </div>
+                            </div>
+
+                            <!-- Enhanced Security for CVV (PBKDF2 + AES-256) -->
+                            <div class="mt-4 border-t border-gray-200 pt-4">
+                                <div class="flex items-start mb-2">
+                                    <div class="flex items-center h-5">
+                                        <input id="use_enhanced_security" name="use_enhanced_security" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" {{ old('use_enhanced_security') ? 'checked' : '' }}>
+                                    </div>
+                                    <div class="ml-3 text-sm">
+                                        <label for="use_enhanced_security" class="font-medium text-gray-700">
+                                            Gunakan keamanan tingkat lanjut
+                                        </label>
+                                        <p class="text-gray-500">
+                                            CVV Anda akan disimpan dengan enkripsi ganda menggunakan PBKDF2 + AES-256
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div id="enhanced-security-fields" class="mt-3 {{ old('use_enhanced_security') ? '' : 'hidden' }}">
+                                    <div>
+                                        <label for="cvv_enhanced" class="block text-sm font-medium text-gray-700">CVV dengan Perlindungan Tambahan</label>
+                                        <input type="text" name="cvv_enhanced" id="cvv_enhanced" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Masukkan CVV lagi" value="{{ old('cvv_enhanced') }}" maxlength="4">
+                                        <div class="mt-1 text-xs text-green-600 flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                            </svg>
+                                            Dienkripsi dengan PBKDF2 + AES-256 (10.000 iterasi)
+                                        </div>
+                                        @error('cvv_enhanced')
+                                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -152,14 +191,14 @@
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm text-indigo-700">
-                                    Informasi pembayaran Anda dienkripsi secara aman menggunakan AES-256 yang diperkuat dengan PBKDF2. 
-                                    Kunci enkripsi kami menggunakan teknik key-stretching yang tahan terhadap serangan brute-force, 
+                                    Informasi pembayaran Anda dienkripsi secara aman menggunakan AES-256 yang diperkuat dengan PBKDF2.
+                                    Kunci enkripsi kami menggunakan teknik key-stretching yang tahan terhadap serangan brute-force,
                                     dan setiap pengguna memiliki salt unik. Data Anda tidak pernah disimpan dalam bentuk plaintext.
                                 </p>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Enhanced Security Details (Collapsible) -->
                     <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
                         <button type="button" id="security-details-toggle" class="w-full px-6 py-4 text-left flex justify-between items-center">
@@ -168,23 +207,23 @@
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
                         </button>
-                        
+
                         <div id="security-details-content" class="hidden px-6 pb-4 pt-2">
                             <div class="prose prose-sm text-gray-600">
                                 <p>ShopX menggunakan kombinasi metode keamanan berikut untuk melindungi data pembayaran Anda:</p>
-                                
+
                                 <h4 class="text-gray-800 font-semibold mt-3">1. AES-256 (Advanced Encryption Standard)</h4>
                                 <p>Standar enkripsi simetris yang diakui secara global yang digunakan oleh lembaga pemerintah dan perusahaan terkemuka. Panjang kunci 256-bit dianggap tidak dapat dipecahkan dengan teknologi komputasi saat ini.</p>
-                                
+
                                 <h4 class="text-gray-800 font-semibold mt-3">2. PBKDF2 (Password-Based Key Derivation Function 2)</h4>
                                 <p>Memperkuat kunci enkripsi dengan menerapkan fungsi hash berulang kali, membuatnya sangat tahan terhadap serangan brute-force. Kami menerapkan 10.000+ iterasi untuk meningkatkan keamanan.</p>
-                                
+
                                 <h4 class="text-gray-800 font-semibold mt-3">3. Salt Acak per Pengguna</h4>
                                 <p>Setiap data pembayaran dilindungi dengan salt acak unik sepanjang 32-byte. Bahkan jika dua pengguna memiliki detail kartu yang identik, enkripsi yang dihasilkan akan berbeda.</p>
-                                
+
                                 <h4 class="text-gray-800 font-semibold mt-3">4. Konteks Tambahan</h4>
                                 <p>Kami memasukkan ID pengguna ke dalam proses enkripsi, memastikan bahwa hanya akun Anda yang dapat mendekripsi data pembayaran Anda.</p>
-                                
+
                                 <p class="mt-3 text-xs text-gray-500">
                                     <strong>Catatan:</strong> Meskipun kami melakukan upaya maksimal untuk melindungi data Anda, tidak ada sistem yang 100% aman. Kami terus mengupdate dan memperbaiki keamanan sistem kami.
                                 </p>
@@ -211,138 +250,175 @@
             console.log('DOM loaded');
             const typeSelect = document.getElementById('type');
             const cardDetailsDiv = document.getElementById('card-details');
-            const bankDetailsDiv = document.getElementById('bank-details');
+            const bankDetailsDiv = document.getElementById('bank-details');            // Enhanced security toggle
+            const enhancedSecurityCheckbox = document.getElementById('use_enhanced_security');
+            const enhancedSecurityFields = document.getElementById('enhanced-security-fields');
 
-            console.log('Type select:', typeSelect);
-            console.log('Card details div:', cardDetailsDiv);
-            console.log('Bank details div:', bankDetailsDiv);
+            // Only execute if these elements exist
+            if (enhancedSecurityCheckbox && enhancedSecurityFields) {
+                enhancedSecurityCheckbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        enhancedSecurityFields.classList.remove('hidden');
+                    } else {
+                        enhancedSecurityFields.classList.add('hidden');
+                        // Clear enhanced CVV field when disabling
+                        document.getElementById('cvv_enhanced').value = '';
+                    }
+                });
 
-            function updateFormFields() {
-                const selectedType = typeSelect.value;
-                console.log('Selected type:', selectedType);
+                // When regular CVV is filled, auto-fill enhanced CVV if checkbox is checked
+                const cvvInput = document.getElementById('cvv');
+                const cvvEnhancedInput = document.getElementById('cvv_enhanced');
 
-                if (selectedType === 'credit_card' || selectedType === 'debit_card') {
-                    console.log('Showing card details');
-                    cardDetailsDiv.classList.remove('hidden');
-                    bankDetailsDiv.classList.add('hidden');
-
-                    // Pastikan input kartu kredit/debit diperlukan
-                    document.getElementById('card_holder').setAttribute('required', 'required');
-                    document.getElementById('card_number').setAttribute('required', 'required');
-                    document.getElementById('expiry_month').setAttribute('required', 'required');
-                    document.getElementById('expiry_year').setAttribute('required', 'required');
-                    document.getElementById('cvv').setAttribute('required', 'required');
-
-                    // Hapus required dari input bank transfer
-                    document.getElementById('bank_name').removeAttribute('required');
-                    document.getElementById('account_number').removeAttribute('required');
-                    document.getElementById('account_holder').removeAttribute('required');
-
-                } else if (selectedType === 'bank_transfer') {
-                    console.log('Showing bank details');
-                    cardDetailsDiv.classList.add('hidden');
-                    bankDetailsDiv.classList.remove('hidden');
-
-                    // Pastikan input bank transfer diperlukan
-                    document.getElementById('bank_name').setAttribute('required', 'required');
-                    document.getElementById('account_number').setAttribute('required', 'required');
-                    document.getElementById('account_holder').setAttribute('required', 'required');
-
-                    // Hapus required dari input kartu kredit/debit
-                    document.getElementById('card_holder').removeAttribute('required');
-                    document.getElementById('card_number').removeAttribute('required');
-                    document.getElementById('expiry_month').removeAttribute('required');
-                    document.getElementById('expiry_year').removeAttribute('required');
-                    document.getElementById('cvv').removeAttribute('required');
-
-                } else {
-                    console.log('Hiding all details');
-                    cardDetailsDiv.classList.add('hidden');
-                    bankDetailsDiv.classList.add('hidden');
-
-                    // Hapus required dari semua input
-                    document.getElementById('card_holder').removeAttribute('required');
-                    document.getElementById('card_number').removeAttribute('required');
-                    document.getElementById('expiry_month').removeAttribute('required');
-                    document.getElementById('expiry_year').removeAttribute('required');
-                    document.getElementById('cvv').removeAttribute('required');
-                    document.getElementById('bank_name').removeAttribute('required');
-                    document.getElementById('account_number').removeAttribute('required');
-                    document.getElementById('account_holder').removeAttribute('required');
+                if (cvvInput && cvvEnhancedInput) {
+                    cvvInput.addEventListener('input', function() {
+                        if (enhancedSecurityCheckbox.checked) {
+                            cvvEnhancedInput.value = this.value;
+                        }
+                    });
                 }
             }
 
-            // Initial setup
-            updateFormFields();
+            // Format CVV fields to numeric only
+            const cvvInputs = document.querySelectorAll('#cvv, #cvv_enhanced');
+            cvvInputs.forEach(input => {
+                if (input) {
+                    input.addEventListener('input', function(e) {
+                        let value = e.target.value.replace(/\D/g, '');
+                        e.target.value = value;
+                    });
+                }
+            });
 
-            // Handle type changes
-            typeSelect.addEventListener('change', updateFormFields);
+            // Toggle payment methods based on type
+            if (typeSelect && cardDetailsDiv && bankDetailsDiv) {
+                function updateFormFields() {
+                    const selectedType = typeSelect.value;
+                    console.log('Selected type:', selectedType);
 
-            // Format card number with spaces
-            const cardNumberInput = document.getElementById('card_number');
-            if (cardNumberInput) {
-                cardNumberInput.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                    if (selectedType === 'credit_card' || selectedType === 'debit_card') {
+                        console.log('Showing card details');
+                        cardDetailsDiv.classList.remove('hidden');
+                        bankDetailsDiv.classList.add('hidden');
 
-                    if (value.length > 0) {
-                        value = value.match(new RegExp('.{1,4}', 'g')).join(' ');
+                        // Pastikan input kartu kredit/debit diperlukan
+                        document.getElementById('card_holder').setAttribute('required', 'required');
+                        document.getElementById('card_number').setAttribute('required', 'required');
+                        document.getElementById('expiry_month').setAttribute('required', 'required');
+                        document.getElementById('expiry_year').setAttribute('required', 'required');
+                        document.getElementById('cvv').setAttribute('required', 'required');
+
+                        // Hapus required dari input bank transfer
+                        document.getElementById('bank_name').removeAttribute('required');
+                        document.getElementById('account_number').removeAttribute('required');
+                        document.getElementById('account_holder').removeAttribute('required');
+
+                    } else if (selectedType === 'bank_transfer') {
+                        console.log('Showing bank details');
+                        cardDetailsDiv.classList.add('hidden');
+                        bankDetailsDiv.classList.remove('hidden');
+
+                        // Pastikan input bank transfer diperlukan
+                        document.getElementById('bank_name').setAttribute('required', 'required');
+                        document.getElementById('account_number').setAttribute('required', 'required');
+                        document.getElementById('account_holder').setAttribute('required', 'required');
+
+                        // Hapus required dari input kartu kredit/debit
+                        document.getElementById('card_holder').removeAttribute('required');
+                        document.getElementById('card_number').removeAttribute('required');
+                        document.getElementById('expiry_month').removeAttribute('required');
+                        document.getElementById('expiry_year').removeAttribute('required');
+                        document.getElementById('cvv').removeAttribute('required');
+
+                    } else {
+                        console.log('Hiding all details');
+                        cardDetailsDiv.classList.add('hidden');
+                        bankDetailsDiv.classList.add('hidden');
+
+                        // Hapus required dari semua input
+                        document.getElementById('card_holder').removeAttribute('required');
+                        document.getElementById('card_number').removeAttribute('required');
+                        document.getElementById('expiry_month').removeAttribute('required');
+                        document.getElementById('expiry_year').removeAttribute('required');
+                        document.getElementById('cvv').removeAttribute('required');
+                        document.getElementById('bank_name').removeAttribute('required');
+                        document.getElementById('account_number').removeAttribute('required');
+                        document.getElementById('account_holder').removeAttribute('required');
                     }
+                }
 
-                    e.target.value = value;
-                });
-            }
+                // Initial setup
+                updateFormFields();
 
-            // Format expiry month and year to be 2 digits
-            const expiryMonthInput = document.getElementById('expiry_month');
-            if (expiryMonthInput) {
-                expiryMonthInput.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length === 1 && parseInt(value) > 1) {
-                        value = '0' + value;
-                    }
-                    if (value.length > 0 && parseInt(value) > 12) {
-                        value = '12';
-                    }
-                    e.target.value = value;
-                });
-            }
+                // Handle type changes
+                typeSelect.addEventListener('change', updateFormFields);
 
-            const expiryYearInput = document.getElementById('expiry_year');
-            if (expiryYearInput) {
-                expiryYearInput.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    e.target.value = value;
-                });
-            }
+                // Format card number with spaces
+                const cardNumberInput = document.getElementById('card_number');
+                if (cardNumberInput) {
+                    cardNumberInput.addEventListener('input', function(e) {
+                        let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
 
-            // Format CVV to be numeric only
-            const cvvInput = document.getElementById('cvv');
-            if (cvvInput) {
-                cvvInput.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    e.target.value = value;
-                });
-            }
+                        if (value.length > 0) {
+                            value = value.match(new RegExp('.{1,4}', 'g')).join(' ');
+                        }
 
-            // Format account number to be numeric only
-            const accountNumberInput = document.getElementById('account_number');
-            if (accountNumberInput) {
-                accountNumberInput.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    e.target.value = value;
-                });
-            }
+                        e.target.value = value;
+                    });
+                }
 
-            // Toggle security details
-            const securityDetailsToggle = document.getElementById('security-details-toggle');
-            const securityDetailsContent = document.getElementById('security-details-content');
-            const securityDetailsArrow = document.getElementById('security-details-arrow');
+                // Format expiry month and year to be 2 digits
+                const expiryMonthInput = document.getElementById('expiry_month');
+                if (expiryMonthInput) {
+                    expiryMonthInput.addEventListener('input', function(e) {
+                        let value = e.target.value.replace(/\D/g, '');
+                        if (value.length === 1 && parseInt(value) > 1) {
+                            value = '0' + value;
+                        }
+                        if (value.length > 0 && parseInt(value) > 12) {
+                            value = '12';
+                        }
+                        e.target.value = value;
+                    });
+                }
 
-            if (securityDetailsToggle) {
-                securityDetailsToggle.addEventListener('click', function() {
-                    securityDetailsContent.classList.toggle('hidden');
-                    securityDetailsArrow.classList.toggle('rotate-180');
-                });
+                const expiryYearInput = document.getElementById('expiry_year');
+                if (expiryYearInput) {
+                    expiryYearInput.addEventListener('input', function(e) {
+                        let value = e.target.value.replace(/\D/g, '');
+                        e.target.value = value;
+                    });
+                }
+
+                // Format CVV to be numeric only
+                const cvvInput = document.getElementById('cvv');
+                if (cvvInput) {
+                    cvvInput.addEventListener('input', function(e) {
+                        let value = e.target.value.replace(/\D/g, '');
+                        e.target.value = value;
+                    });
+                }
+
+                // Format account number to be numeric only
+                const accountNumberInput = document.getElementById('account_number');
+                if (accountNumberInput) {
+                    accountNumberInput.addEventListener('input', function(e) {
+                        let value = e.target.value.replace(/\D/g, '');
+                        e.target.value = value;
+                    });
+                }
+
+                // Toggle security details
+                const securityDetailsToggle = document.getElementById('security-details-toggle');
+                const securityDetailsContent = document.getElementById('security-details-content');
+                const securityDetailsArrow = document.getElementById('security-details-arrow');
+
+                if (securityDetailsToggle) {
+                    securityDetailsToggle.addEventListener('click', function() {
+                        securityDetailsContent.classList.toggle('hidden');
+                        securityDetailsArrow.classList.toggle('rotate-180');
+                    });
+                }
             }
         });
     </script>

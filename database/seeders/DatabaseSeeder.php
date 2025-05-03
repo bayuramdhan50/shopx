@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             'is_admin' => true,
             'password' => bcrypt('password123'),
         ]);
-        
+
         // Create a regular customer
         User::factory()->create([
             'name' => 'John Customer',
@@ -34,8 +34,11 @@ class DatabaseSeeder extends Seeder
             'postal_code' => '12345',
             'country' => 'Indonesia',
         ]);
-        
+
         // Create sample products
-        $this->call(ProductSeeder::class);
+        $this->call([
+            ProductSeeder::class,
+            PaymentMethodSeeder::class, // Add payment method seeder
+        ]);
     }
 }
